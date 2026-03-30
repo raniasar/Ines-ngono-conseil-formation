@@ -1,1 +1,1565 @@
+<!DOCTYPE html>
 
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Menu des Célibataires — Plat + Dessert · 10€</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0A0705;
+  --dark: #130E0A;
+  --card: #1C1410;
+  --cream: #F7F0E6;
+  --warm: #EDE0CC;
+  --muted: #7A6E64;
+  --fire: #D94F1E;
+  --fire-bright: #FF5C26;
+  --gold: #C8963E;
+  --gold-light: #E8B96A;
+  --green: #2D6A4F;
+  --border: rgba(247,240,230,0.08);
+  --border-warm: rgba(200,150,62,0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+background: var(–black);
+color: var(–cream);
+font-family: ‘DM Sans’, sans-serif;
+overflow-x: hidden;
+cursor: none;
+}
+
+/* ══ CURSOR ══ */
+.cursor-dot {
+position: fixed;
+width: 8px; height: 8px;
+background: var(–fire);
+border-radius: 50%;
+pointer-events: none;
+z-index: 9999;
+transform: translate(-50%,-50%);
+transition: transform 0.08s, width 0.2s, height 0.2s;
+}
+.cursor-circle {
+position: fixed;
+width: 36px; height: 36px;
+border: 1px solid rgba(217,79,30,0.4);
+border-radius: 50%;
+pointer-events: none;
+z-index: 9998;
+transform: translate(-50%,-50%);
+transition: width 0.3s, height 0.3s;
+}
+.cursor-big .cursor-dot { width: 16px; height: 16px; }
+.cursor-big .cursor-circle { width: 56px; height: 56px; border-color: rgba(217,79,30,0.6); }
+
+/* ══ GRAIN OVERLAY ══ */
+body::after {
+content: ‘’;
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 9000;
+opacity: 0.03;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 512 512’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘g’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.75’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23g)’/%3E%3C/svg%3E”);
+}
+
+/* ══ NAV ══ */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 800;
+padding: 0 64px;
+height: 72px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+transition: background 0.4s, backdrop-filter 0.4s;
+}
+nav.scrolled {
+background: rgba(10,7,5,0.92);
+backdrop-filter: blur(24px);
+border-bottom: 1px solid var(–border);
+}
+
+.nav-brand {
+display: flex;
+align-items: center;
+gap: 10px;
+text-decoration: none;
+}
+.nav-brand-icon {
+width: 36px; height: 36px;
+background: var(–fire);
+clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+display: flex; align-items: center; justify-content: center;
+font-size: 0.9rem;
+}
+.nav-brand-text {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 1.05rem;
+letter-spacing: 3px;
+color: var(–cream);
+}
+.nav-brand-text span { color: var(–fire); }
+
+.nav-links {
+display: flex;
+list-style: none;
+gap: 48px;
+align-items: center;
+}
+.nav-links a {
+text-decoration: none;
+color: var(–muted);
+font-size: 0.75rem;
+font-weight: 600;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+transition: color 0.25s;
+}
+.nav-links a:hover { color: var(–cream); }
+
+.nav-cta {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: var(–fire) !important;
+color: white !important;
+padding: 10px 24px !important;
+font-family: ‘Bebas Neue’, sans-serif !important;
+font-size: 0.9rem !important;
+letter-spacing: 2px !important;
+clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+transition: background 0.3s !important;
+}
+.nav-cta:hover { background: var(–fire-bright) !important; color: white !important; }
+
+/* ══ HERO ══ */
+#hero {
+min-height: 100vh;
+position: relative;
+display: grid;
+grid-template-columns: 1fr 1fr;
+overflow: hidden;
+}
+
+/* Left: photo */
+.hero-photo-side {
+position: relative;
+overflow: hidden;
+}
+.hero-photo-side::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: linear-gradient(90deg, var(–black) 0%, transparent 40%),
+linear-gradient(0deg, var(–black) 0%, transparent 35%);
+}
+.hero-photo-side img {
+width: 100%; height: 100%;
+object-fit: cover;
+object-position: center;
+filter: brightness(0.75) saturate(1.1);
+transform: scale(1.04);
+transition: transform 8s ease;
+}
+.hero-photo-side:hover img { transform: scale(1); }
+
+/* Right: content */
+.hero-content-side {
+position: relative;
+z-index: 2;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 120px 80px 80px 60px;
+}
+
+.hero-eyebrow {
+display: flex;
+align-items: center;
+gap: 14px;
+margin-bottom: 32px;
+opacity: 0;
+animation: fadeUp 0.9s 0.3s both;
+}
+.eyebrow-dash { width: 32px; height: 1px; background: var(–fire); }
+.eyebrow-text {
+font-size: 0.68rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–fire);
+font-weight: 600;
+}
+
+.hero-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+font-weight: 900;
+line-height: 1;
+margin-bottom: 8px;
+opacity: 0;
+animation: fadeUp 0.9s 0.5s both;
+}
+.hero-title .t1 { color: var(–cream); display: block; }
+.hero-title .t2 {
+color: var(–fire);
+font-style: italic;
+display: block;
+}
+.hero-title .t3 {
+color: var(–cream);
+display: block;
+-webkit-text-stroke: 1px rgba(247,240,230,0.25);
+color: transparent;
+}
+
+.hero-subtitle {
+font-family: ‘Playfair Display’, serif;
+font-style: italic;
+font-size: 1.3rem;
+color: var(–gold-light);
+margin-bottom: 32px;
+opacity: 0;
+animation: fadeUp 0.9s 0.65s both;
+}
+
+.hero-desc {
+font-size: 0.95rem;
+color: var(–muted);
+line-height: 1.8;
+max-width: 380px;
+margin-bottom: 52px;
+opacity: 0;
+animation: fadeUp 0.9s 0.8s both;
+}
+.hero-desc strong { color: var(–cream); font-weight: 600; }
+
+.hero-price-badge {
+display: inline-flex;
+flex-direction: column;
+align-items: flex-start;
+margin-bottom: 52px;
+opacity: 0;
+animation: fadeUp 0.9s 0.9s both;
+}
+.price-label {
+font-size: 0.65rem;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 4px;
+}
+.price-value {
+font-family: ‘Playfair Display’, serif;
+font-size: 4rem;
+font-weight: 900;
+color: var(–gold);
+line-height: 1;
+}
+.price-detail {
+font-size: 0.8rem;
+color: var(–muted);
+margin-top: 4px;
+}
+
+.hero-actions {
+display: flex;
+gap: 16px;
+align-items: center;
+opacity: 0;
+animation: fadeUp 0.9s 1s both;
+}
+
+.btn-primary {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+background: var(–fire);
+color: white;
+text-decoration: none;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 1rem;
+letter-spacing: 2.5px;
+padding: 16px 40px;
+clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+transition: all 0.3s;
+box-shadow: 0 8px 32px rgba(217,79,30,0.4);
+position: relative;
+overflow: hidden;
+}
+.btn-primary::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+opacity: 0;
+transition: opacity 0.3s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(217,79,30,0.55); }
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-outline {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+color: var(–cream);
+text-decoration: none;
+font-size: 0.72rem;
+font-weight: 600;
+letter-spacing: 2px;
+text-transform: uppercase;
+padding: 16px 0;
+border-bottom: 1px solid rgba(247,240,230,0.15);
+transition: all 0.3s;
+}
+.btn-outline:hover { color: var(–gold); border-color: var(–gold); gap: 16px; }
+
+/* Hero bottom overlay stats */
+.hero-stats-bar {
+position: absolute;
+bottom: 0; left: 0; right: 0;
+z-index: 10;
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+border-top: 1px solid var(–border);
+}
+.hero-stat {
+padding: 24px 32px;
+border-right: 1px solid var(–border);
+background: rgba(10,7,5,0.7);
+backdrop-filter: blur(8px);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-num {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 2rem;
+color: var(–fire);
+letter-spacing: 1px;
+line-height: 1;
+margin-bottom: 4px;
+}
+.hero-stat-label {
+font-size: 0.68rem;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–muted);
+}
+
+/* ══ MARQUEE ══ */
+.marquee-section {
+background: var(–fire);
+padding: 13px 0;
+overflow: hidden;
+}
+.marquee-track {
+display: flex;
+width: max-content;
+animation: marquee 22s linear infinite;
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-item {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 0.95rem;
+letter-spacing: 3px;
+color: rgba(10,7,5,0.85);
+padding: 0 36px;
+white-space: nowrap;
+display: flex;
+align-items: center;
+gap: 36px;
+}
+.marquee-item::after { content: ‘✦’; font-size: 0.6rem; }
+
+/* ══ CONCEPT SECTION ══ */
+#concept {
+padding: 160px 64px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+}
+
+.section-eyebrow {
+display: flex;
+align-items: center;
+gap: 14px;
+margin-bottom: 28px;
+}
+.section-eyebrow span {
+font-size: 0.65rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–fire);
+font-weight: 700;
+}
+.section-eyebrow::before {
+content: ‘’;
+width: 28px; height: 1px;
+background: var(–fire);
+}
+
+.concept-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2.2rem, 3.5vw, 3.6rem);
+font-weight: 700;
+line-height: 1.15;
+margin-bottom: 28px;
+color: var(–cream);
+}
+.concept-title em { color: var(–gold); font-style: italic; }
+
+.concept-text {
+font-size: 0.95rem;
+color: var(–muted);
+line-height: 1.9;
+margin-bottom: 48px;
+max-width: 460px;
+}
+.concept-text strong { color: var(–cream); font-weight: 600; }
+
+.concept-features {
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+.feature-row {
+display: flex;
+align-items: center;
+gap: 16px;
+padding: 16px 20px;
+border: 1px solid var(–border);
+background: var(–dark);
+transition: border-color 0.3s, background 0.3s;
+}
+.feature-row:hover { border-color: var(–border-warm); background: var(–card); }
+.feature-icon {
+width: 40px; height: 40px;
+background: rgba(217,79,30,0.1);
+border: 1px solid rgba(217,79,30,0.2);
+display: flex; align-items: center; justify-content: center;
+font-size: 1.1rem;
+flex-shrink: 0;
+}
+.feature-text h4 {
+font-size: 0.85rem;
+font-weight: 600;
+color: var(–cream);
+margin-bottom: 2px;
+}
+.feature-text p {
+font-size: 0.75rem;
+color: var(–muted);
+}
+
+/* Concept right: photo collage */
+.concept-photos {
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-template-rows: 1fr 1fr;
+gap: 12px;
+height: 600px;
+}
+.photo-cell {
+overflow: hidden;
+position: relative;
+}
+.photo-cell img {
+width: 100%; height: 100%;
+object-fit: cover;
+transition: transform 0.6s ease, filter 0.6s;
+filter: brightness(0.8) saturate(1.1);
+}
+.photo-cell:hover img { transform: scale(1.06); filter: brightness(0.95) saturate(1.2); }
+.photo-cell.tall { grid-row: span 2; }
+.photo-badge {
+position: absolute;
+bottom: 0; left: 0; right: 0;
+background: linear-gradient(transparent, rgba(10,7,5,0.9));
+padding: 28px 20px 16px;
+}
+.photo-badge-text {
+font-family: ‘Playfair Display’, serif;
+font-style: italic;
+font-size: 1rem;
+color: var(–gold-light);
+}
+
+/* ══ MENU SECTION ══ */
+#menu {
+padding: 160px 64px;
+background: var(–dark);
+position: relative;
+}
+
+.menu-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+margin-bottom: 80px;
+gap: 40px;
+}
+.menu-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2.5rem, 4vw, 4.5rem);
+font-weight: 900;
+line-height: 1.05;
+}
+.menu-title em { color: var(–fire); font-style: italic; }
+.menu-header-note {
+max-width: 260px;
+font-size: 0.82rem;
+color: var(–muted);
+line-height: 1.7;
+text-align: right;
+}
+.menu-header-note strong { color: var(–cream); display: block; font-size: 0.9rem; margin-bottom: 4px; }
+
+/* Menu cards grid */
+.menu-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 2px;
+background: var(–border);
+}
+.menu-card {
+background: var(–dark);
+display: grid;
+grid-template-columns: 240px 1fr;
+min-height: 240px;
+transition: background 0.35s;
+position: relative;
+overflow: hidden;
+}
+.menu-card:hover { background: var(–card); }
+
+.card-photo {
+position: relative;
+overflow: hidden;
+}
+.card-photo img {
+width: 100%; height: 100%;
+object-fit: cover;
+transition: transform 0.5s;
+filter: brightness(0.85);
+}
+.menu-card:hover .card-photo img { transform: scale(1.07); }
+
+.card-num {
+position: absolute;
+top: 14px; left: 14px;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 1rem;
+letter-spacing: 2px;
+color: white;
+background: var(–fire);
+padding: 4px 10px;
+}
+
+.card-body {
+padding: 32px 36px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+.card-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.5rem;
+font-weight: 700;
+color: var(–cream);
+margin-bottom: 8px;
+line-height: 1.2;
+}
+.card-desc {
+font-size: 0.8rem;
+color: var(–muted);
+line-height: 1.6;
+margin-bottom: 24px;
+}
+.card-footer {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.card-dessert {
+display: flex;
+align-items: center;
+gap: 8px;
+background: rgba(200,150,62,0.08);
+border: 1px solid rgba(200,150,62,0.2);
+padding: 6px 14px;
+font-size: 0.7rem;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–gold);
+font-weight: 700;
+}
+.card-price {
+font-family: ‘Playfair Display’, serif;
+font-size: 2.2rem;
+font-weight: 900;
+color: var(–fire);
+}
+
+.card-featured::before {
+content: ‘À LA CARTE CETTE SEMAINE’;
+position: absolute;
+top: 14px; right: 14px;
+background: var(–gold);
+color: var(–black);
+font-size: 0.58rem;
+font-weight: 700;
+letter-spacing: 1.5px;
+padding: 4px 10px;
+z-index: 2;
+}
+
+/* ══ WHY US ══ */
+#pourquoi {
+padding: 160px 64px;
+position: relative;
+}
+
+.why-header {
+margin-bottom: 80px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 60px;
+align-items: end;
+}
+.why-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2.5rem, 4vw, 5rem);
+font-weight: 900;
+line-height: 1.05;
+}
+.why-title em { color: var(–fire); font-style: italic; }
+.why-intro {
+font-size: 0.95rem;
+color: var(–muted);
+line-height: 1.8;
+padding-bottom: 8px;
+}
+.why-intro strong { color: var(–cream); font-weight: 600; }
+
+.why-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 1px;
+background: var(–border);
+}
+.why-card {
+background: var(–black);
+padding: 48px 36px;
+position: relative;
+overflow: hidden;
+transition: background 0.35s;
+}
+.why-card:hover { background: var(–dark); }
+.why-card-line {
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: var(–fire);
+transform: scaleX(0);
+transform-origin: left;
+transition: transform 0.4s;
+}
+.why-card:hover .why-card-line { transform: scaleX(1); }
+.why-card-icon {
+width: 52px; height: 52px;
+background: rgba(217,79,30,0.1);
+border: 1px solid rgba(217,79,30,0.2);
+display: flex; align-items: center; justify-content: center;
+font-size: 1.4rem;
+margin-bottom: 28px;
+}
+.why-card-num {
+position: absolute;
+bottom: 16px; right: 20px;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 5rem;
+color: rgba(247,240,230,0.04);
+letter-spacing: -2px;
+line-height: 1;
+}
+.why-card h3 {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.35rem;
+font-weight: 700;
+color: var(–cream);
+margin-bottom: 12px;
+}
+.why-card p {
+font-size: 0.82rem;
+color: var(–muted);
+line-height: 1.75;
+}
+
+/* ══ TESTIMONIALS ══ */
+#avis {
+padding: 120px 64px;
+background: var(–dark);
+}
+
+.avis-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 64px;
+}
+.avis-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 2.5rem;
+font-weight: 900;
+}
+.avis-title em { color: var(–gold); font-style: italic; }
+.stars-total {
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+gap: 4px;
+}
+.stars { color: var(–gold); font-size: 1.1rem; letter-spacing: 3px; }
+.stars-label { font-size: 0.72rem; color: var(–muted); letter-spacing: 1px; }
+
+.avis-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2px;
+background: var(–border);
+}
+.avis-card {
+background: var(–dark);
+padding: 40px 36px;
+transition: background 0.3s;
+}
+.avis-card:hover { background: var(–card); }
+.avis-quote {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+font-style: italic;
+color: var(–cream);
+line-height: 1.65;
+margin-bottom: 28px;
+position: relative;
+padding-top: 28px;
+}
+.avis-quote::before {
+content: ‘”’;
+position: absolute;
+top: -10px; left: -4px;
+font-size: 4rem;
+color: var(–fire);
+font-family: ‘Playfair Display’, serif;
+line-height: 1;
+opacity: 0.4;
+}
+.avis-author {
+display: flex;
+align-items: center;
+gap: 14px;
+border-top: 1px solid var(–border);
+padding-top: 20px;
+}
+.avis-avatar {
+width: 42px; height: 42px;
+border-radius: 50%;
+overflow: hidden;
+flex-shrink: 0;
+border: 2px solid var(–border-warm);
+}
+.avis-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avis-name { font-size: 0.85rem; font-weight: 600; color: var(–cream); margin-bottom: 2px; }
+.avis-rating { color: var(–gold); font-size: 0.7rem; letter-spacing: 2px; }
+
+/* ══ CTA SECTION ══ */
+#commander {
+padding: 160px 64px;
+position: relative;
+overflow: hidden;
+}
+
+.cta-bg {
+position: absolute;
+inset: 0;
+overflow: hidden;
+}
+.cta-bg img {
+width: 100%; height: 100%;
+object-fit: cover;
+filter: brightness(0.18) saturate(0.8);
+}
+.cta-bg::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(217,79,30,0.06), transparent);
+}
+
+.cta-inner {
+position: relative;
+z-index: 2;
+text-align: center;
+max-width: 760px;
+margin: 0 auto;
+}
+
+.cta-badge {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 36px;
+padding: 10px 24px;
+border: 1px solid var(–border-warm);
+background: rgba(200,150,62,0.06);
+}
+.cta-badge span {
+font-size: 0.68rem;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(–gold);
+font-weight: 700;
+}
+.cta-badge-dot { width: 6px; height: 6px; background: var(–gold); border-radius: 50%; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.cta-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(3rem, 6vw, 6rem);
+font-weight: 900;
+line-height: 1;
+margin-bottom: 28px;
+}
+.cta-title em { color: var(–fire); font-style: italic; }
+
+.cta-sub {
+font-size: 1rem;
+color: var(–muted);
+line-height: 1.8;
+margin-bottom: 60px;
+max-width: 520px;
+margin-left: auto;
+margin-right: auto;
+}
+.cta-sub strong { color: var(–cream); font-weight: 600; }
+
+.cta-buttons {
+display: flex;
+gap: 16px;
+justify-content: center;
+flex-wrap: wrap;
+margin-bottom: 52px;
+}
+
+.btn-wa {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+background: #25D366;
+color: white;
+text-decoration: none;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 1rem;
+letter-spacing: 2.5px;
+padding: 18px 48px;
+clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+box-shadow: 0 10px 36px rgba(37,211,102,0.3);
+transition: all 0.3s;
+}
+.btn-wa:hover { transform: translateY(-3px); box-shadow: 0 20px 52px rgba(37,211,102,0.45); }
+
+.btn-ig {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+background: transparent;
+border: 1px solid rgba(247,240,230,0.2);
+color: var(–cream);
+text-decoration: none;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 1rem;
+letter-spacing: 2.5px;
+padding: 18px 48px;
+clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+transition: all 0.3s;
+}
+.btn-ig:hover { border-color: var(–gold); color: var(–gold); transform: translateY(-3px); }
+
+.cta-assurance {
+display: flex;
+gap: 32px;
+justify-content: center;
+align-items: center;
+}
+.assurance-item {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 0.75rem;
+color: var(–muted);
+letter-spacing: 0.5px;
+}
+.assurance-item span:first-child { color: var(–fire); font-size: 0.9rem; }
+
+/* ══ FOOTER ══ */
+footer {
+background: #060504;
+padding: 80px 64px 36px;
+border-top: 1px solid var(–border);
+}
+
+.footer-grid {
+display: grid;
+grid-template-columns: 2fr 1fr 1fr;
+gap: 80px;
+margin-bottom: 64px;
+}
+
+.footer-brand-logo {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.6rem;
+font-weight: 900;
+margin-bottom: 8px;
+}
+.footer-brand-logo em { color: var(–fire); font-style: italic; }
+.footer-tagline {
+font-size: 0.72rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 20px;
+font-family: ‘Bebas Neue’, sans-serif;
+}
+.footer-about {
+font-size: 0.85rem;
+color: var(–muted);
+line-height: 1.8;
+max-width: 300px;
+}
+
+.footer-col-title {
+font-size: 0.62rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–fire);
+font-weight: 700;
+margin-bottom: 24px;
+padding-bottom: 12px;
+border-bottom: 1px solid var(–border);
+}
+.footer-col ul { list-style: none; }
+.footer-col li {
+font-size: 0.83rem;
+color: var(–muted);
+padding: 8px 0;
+border-bottom: 1px solid rgba(247,240,230,0.04);
+display: flex;
+gap: 10px;
+align-items: flex-start;
+transition: color 0.25s;
+}
+.footer-col li:hover { color: var(–cream); }
+.footer-col li i { color: var(–fire); font-style: normal; font-size: 0.8rem; }
+
+.footer-bottom {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding-top: 28px;
+border-top: 1px solid var(–border);
+gap: 20px;
+flex-wrap: wrap;
+}
+.footer-bottom p { font-size: 0.72rem; color: rgba(247,240,230,0.18); }
+.footer-bottom-right { display: flex; gap: 24px; align-items: center; }
+.footer-bottom-right a {
+font-size: 0.68rem;
+color: rgba(247,240,230,0.18);
+text-decoration: none;
+letter-spacing: 1px;
+text-transform: uppercase;
+transition: color 0.25s;
+}
+.footer-bottom-right a:hover { color: var(–cream); }
+
+/* ══ REVEAL ANIMATIONS ══ */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(36px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+opacity: 0;
+transform: translateY(36px);
+transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.22s; }
+.delay-3 { transition-delay: 0.34s; }
+.delay-4 { transition-delay: 0.46s; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1100px) {
+nav { padding: 0 32px; }
+.nav-links { display: none; }
+#hero { grid-template-columns: 1fr; }
+.hero-photo-side {
+position: absolute;
+inset: 0;
+z-index: 0;
+}
+.hero-content-side {
+position: relative;
+z-index: 2;
+padding: 120px 32px 160px;
+background: linear-gradient(90deg, rgba(10,7,5,0.95) 0%, rgba(10,7,5,0.7) 100%);
+}
+.hero-stats-bar { grid-template-columns: repeat(2,1fr); }
+#concept { grid-template-columns: 1fr; padding: 80px 32px; gap: 48px; }
+.concept-photos { height: 400px; }
+#menu { padding: 80px 32px; }
+.menu-grid { grid-template-columns: 1fr; }
+.menu-card { grid-template-columns: 180px 1fr; min-height: 200px; }
+.menu-header { flex-direction: column; align-items: flex-start; }
+.menu-header-note { text-align: left; max-width: 100%; }
+#pourquoi { padding: 80px 32px; }
+.why-header { grid-template-columns: 1fr; gap: 24px; }
+.why-grid { grid-template-columns: 1fr 1fr; }
+#avis { padding: 80px 32px; }
+.avis-grid { grid-template-columns: 1fr; }
+.avis-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+#commander { padding: 100px 32px; }
+footer { padding: 60px 32px 28px; }
+.footer-grid { grid-template-columns: 1fr; gap: 40px; }
+.footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 600px) {
+.hero-stats-bar { grid-template-columns: repeat(2,1fr); }
+.why-grid { grid-template-columns: 1fr; }
+.menu-card { grid-template-columns: 1fr; }
+.card-photo { height: 200px; }
+.cta-assurance { flex-direction: column; gap: 12px; align-items: flex-start; }
+.cta-title { font-size: 2.6rem; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-circle" id="cursorCircle"></div>
+
+<!-- NAV -->
+
+<nav id="navbar">
+  <a href="#" class="nav-brand">
+    <div class="nav-brand-icon">🍴</div>
+    <span class="nav-brand-text">LE MENU <span>DES</span> CÉLIBS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#concept">Le concept</a></li>
+    <li><a href="#menu">Le menu</a></li>
+    <li><a href="#pourquoi">Pourquoi nous</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#commander" class="nav-cta">Commander →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<section id="hero">
+  <div class="hero-photo-side">
+    <img
+      src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1200&q=85&auto=format&fit=crop"
+      alt="Repas maison appétissant"
+    />
+  </div>
+
+  <div class="hero-content-side">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dash"></span>
+      <span class="eyebrow-text">Le repas du soir, sans prise de tête</span>
+    </div>
+
+```
+<h1 class="hero-title">
+  <span class="t1">LE MENU</span>
+  <span class="t2">des Célibs</span>
+  <span class="t3">Bien manger</span>
+</h1>
+
+<div class="hero-subtitle">Plat + Dessert · Fait maison · 10€</div>
+
+<p class="hero-desc">
+  <strong>T'as pas envie de cuisiner ce soir ?</strong> On s'en occupe.
+  Un vrai repas maison — plat chaud + dessert — à 10€.
+  Livré chez toi ou prêt à emporter.
+</p>
+
+<div class="hero-price-badge">
+  <span class="price-label">Tout compris</span>
+  <div class="price-value">10€</div>
+  <span class="price-detail">Plat du jour + dessert maison</span>
+</div>
+
+<div class="hero-actions">
+  <a href="#commander" class="btn-primary">
+    Je commande maintenant →
+  </a>
+  <a href="#menu" class="btn-outline">Voir le menu ↓</a>
+</div>
+```
+
+  </div>
+
+  <div class="hero-stats-bar">
+    <div class="hero-stat">
+      <div class="hero-stat-num">10€</div>
+      <div class="hero-stat-label">Plat + Dessert</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Fait maison</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">7j/7</div>
+      <div class="hero-stat-label">Disponible</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">0€</div>
+      <div class="hero-stat-label">De surprise cachée</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">PLAT + DESSERT</div>
+    <div class="marquee-item">10€ SEULEMENT</div>
+    <div class="marquee-item">FAIT MAISON</div>
+    <div class="marquee-item">RIEN QUE POUR TOI</div>
+    <div class="marquee-item">LIVRAISON DISPONIBLE</div>
+    <div class="marquee-item">MENU RENOUVELÉ CHAQUE SEMAINE</div>
+    <div class="marquee-item">COMMANDE EN 30 SECONDES</div>
+    <div class="marquee-item">PLAT + DESSERT</div>
+    <div class="marquee-item">10€ SEULEMENT</div>
+    <div class="marquee-item">FAIT MAISON</div>
+    <div class="marquee-item">RIEN QUE POUR TOI</div>
+    <div class="marquee-item">LIVRAISON DISPONIBLE</div>
+    <div class="marquee-item">MENU RENOUVELÉ CHAQUE SEMAINE</div>
+    <div class="marquee-item">COMMANDE EN 30 SECONDES</div>
+  </div>
+</div>
+
+<!-- CONCEPT -->
+
+<section id="concept">
+  <div>
+    <div class="section-eyebrow reveal"><span>Le concept</span></div>
+    <h2 class="concept-title reveal delay-1">
+      Des repas <em>vrais,</em><br>pensés pour toi.
+    </h2>
+    <p class="concept-text reveal delay-2">
+      T'as une vie. T'as mieux à faire que de rester une heure en cuisine.
+      <strong>Le Menu des Célibataires</strong>, c'est un plat maison chaud +
+      un dessert fait avec soin, à 10€ seulement. Disponible 7j/7,
+      à emporter ou livré directement chez toi. Simple, honnête, bon.
+    </p>
+    <div class="concept-features reveal delay-3">
+      <div class="feature-row">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-text">
+          <h4>Commande en 30 secondes</h4>
+          <p>Un message WhatsApp suffit. Pas de formulaire, pas de compte.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">🏠</div>
+        <div class="feature-text">
+          <h4>Vraiment fait maison</h4>
+          <p>Des vraies recettes, préparées avec de vrais ingrédients. Chaque jour.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">🍽️</div>
+        <div class="feature-text">
+          <h4>Portion juste pour une personne</h4>
+          <p>Ni trop, ni trop peu. Exactement ce qu'il te faut pour un bon repas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept-photos reveal delay-2">
+    <div class="photo-cell tall">
+      <img
+        src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&q=80&auto=format&fit=crop"
+        alt="Plat maison"
+      />
+      <div class="photo-badge">
+        <div class="photo-badge-text">Chaque plat préparé avec soin</div>
+      </div>
+    </div>
+    <div class="photo-cell">
+      <img
+        src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80&auto=format&fit=crop"
+        alt="Dessert maison"
+      />
+    </div>
+    <div class="photo-cell">
+      <img
+        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80&auto=format&fit=crop"
+        alt="Repas savoureux"
+      />
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+
+<section id="menu">
+  <div class="menu-header">
+    <div>
+      <div class="section-eyebrow reveal"><span>Cette semaine</span></div>
+      <h2 class="menu-title reveal delay-1">
+        Le menu<br><em>du moment</em>
+      </h2>
+    </div>
+    <div class="menu-header-note reveal">
+      <strong>Renouvelé chaque semaine 🔔</strong>
+      Suis-nous sur Instagram pour découvrir les nouveaux plats en avant-première.
+    </div>
+  </div>
+
+  <div class="menu-grid">
+    <!-- Card 1 -->
+    <div class="menu-card card-featured reveal">
+      <div class="card-photo">
+        <img
+          src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600&q=80&auto=format&fit=crop"
+          alt="Pâtes bolognaise"
+        />
+        <div class="card-num">01</div>
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="card-name">Pâtes à la Bolognaise</div>
+          <div class="card-desc">Sauce maison mijotée 2h · Viande fondante · Parmesan râpé · Basilic frais</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-dessert">🍮 Crème caramel</div>
+          <div class="card-price">10€</div>
+        </div>
+      </div>
+    </div>
+
+```
+<!-- Card 2 -->
+<div class="menu-card reveal delay-1">
+  <div class="card-photo">
+    <img
+      src="https://images.unsplash.com/photo-1598103442097-8b74394b95c3?w=600&q=80&auto=format&fit=crop"
+      alt="Poulet rôti"
+    />
+    <div class="card-num">02</div>
+  </div>
+  <div class="card-body">
+    <div>
+      <div class="card-name">Poulet Rôti aux Herbes</div>
+      <div class="card-desc">Marinade citron-herbes · Légumes rôtis · Pommes de terre fondantes</div>
+    </div>
+    <div class="card-footer">
+      <div class="card-dessert">🍰 Tiramisu maison</div>
+      <div class="card-price">10€</div>
+    </div>
+  </div>
+</div>
+
+<!-- Card 3 -->
+<div class="menu-card reveal delay-2">
+  <div class="card-photo">
+    <img
+      src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80&auto=format&fit=crop"
+      alt="Tajine de poulet"
+    />
+    <div class="card-num">03</div>
+  </div>
+  <div class="card-body">
+    <div>
+      <div class="card-name">Tajine de Poulet</div>
+      <div class="card-desc">Olives & citron confit · Semoule dorée · Épices du Maghreb</div>
+    </div>
+    <div class="card-footer">
+      <div class="card-dessert">🍯 Gâteau au miel</div>
+      <div class="card-price">10€</div>
+    </div>
+  </div>
+</div>
+
+<!-- Card 4 -->
+<div class="menu-card reveal delay-3">
+  <div class="card-photo">
+    <img
+      src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&q=80&auto=format&fit=crop"
+      alt="Gratin de courgettes"
+    />
+    <div class="card-num">04</div>
+  </div>
+  <div class="card-body">
+    <div>
+      <div class="card-name">Gratin de Courgettes</div>
+      <div class="card-desc">Fromage fondu · Sauce béchamel maison · Légumes du soleil</div>
+    </div>
+    <div class="card-footer">
+      <div class="card-dessert">🧁 Muffin chocolat</div>
+      <div class="card-price">10€</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- WHY -->
+
+<section id="pourquoi">
+  <div class="why-header">
+    <div>
+      <div class="section-eyebrow reveal"><span>Pourquoi nous choisir</span></div>
+      <h2 class="why-title reveal delay-1">
+        Tout ce qu'il<br>te faut.<br><em>Rien de moins.</em>
+      </h2>
+    </div>
+    <p class="why-intro reveal delay-2">
+      On n'est pas un resto, on n'est pas une appli compliquée.
+      On est juste <strong>des gens qui cuisinent bien</strong>,
+      pour des gens qui ont mieux à faire. C'est tout. C'est assez.
+    </p>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-card-line"></div>
+      <div class="why-card-icon">⚡</div>
+      <h3>Ultra Rapide</h3>
+      <p>Commande sur WhatsApp en 30 secondes. Pas de formulaire, pas d'inscription, pas d'attente.</p>
+      <span class="why-card-num">01</span>
+    </div>
+    <div class="why-card reveal delay-1">
+      <div class="why-card-line"></div>
+      <div class="why-card-icon">💸</div>
+      <h3>Vraiment Pas Cher</h3>
+      <p>10€ pour un repas complet. Moins qu'un kebab, infiniment meilleur que des pâtes à l'eau.</p>
+      <span class="why-card-num">02</span>
+    </div>
+    <div class="why-card reveal delay-2">
+      <div class="why-card-line"></div>
+      <div class="why-card-icon">❤️</div>
+      <h3>100% Fait Maison</h3>
+      <p>Cuisinés avec soin, pas réchauffés. Des vraies recettes, des vrais ingrédients, pour de vrai.</p>
+      <span class="why-card-num">03</span>
+    </div>
+    <div class="why-card reveal delay-3">
+      <div class="why-card-line"></div>
+      <div class="why-card-icon">🍽️</div>
+      <h3>Portion Solo</h3>
+      <p>Pensé pour une seule personne. Ni trop, ni trop peu. Ce qu'il te faut, point.</p>
+      <span class="why-card-num">04</span>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+
+<section id="avis">
+  <div class="avis-header reveal">
+    <h2 class="avis-title">Ce qu'ils en <em>disent</em></h2>
+    <div class="stars-total">
+      <div class="stars">★★★★★</div>
+      <div class="stars-label">+100 clients satisfaits</div>
+    </div>
+  </div>
+  <div class="avis-grid">
+    <div class="avis-card reveal">
+      <div class="avis-quote">
+        Franchement je pensais pas que ça allait être aussi bon. Les pâtes bolognaise c'était exactement comme à la maison, mais en mieux. Et à 10€ c'est vraiment imbattable.
+      </div>
+      <div class="avis-author">
+        <div class="avis-avatar">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80&auto=format&fit=crop&crop=face" alt="Sarah" />
+        </div>
+        <div>
+          <div class="avis-name">Sarah M.</div>
+          <div class="avis-rating">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="avis-card reveal delay-1">
+      <div class="avis-quote">
+        Le tajine de poulet était incroyable, semoule bien cuite, sauce parfumée. J'ai commandé trois fois cette semaine. Je vais recommander à tous mes amis.
+      </div>
+      <div class="avis-author">
+        <div class="avis-avatar">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80&auto=format&fit=crop&crop=face" alt="Karim" />
+        </div>
+        <div>
+          <div class="avis-name">Karim B.</div>
+          <div class="avis-rating">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="avis-card reveal delay-2">
+      <div class="avis-quote">
+        Super concept. J'habite seule et me faire à manger pour une personne c'est toujours une galère. Là j'ai tout ce qu'il me faut, livré, à 10€. Parfait.
+      </div>
+      <div class="avis-author">
+        <div class="avis-avatar">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80&auto=format&fit=crop&crop=face" alt="Léa" />
+        </div>
+        <div>
+          <div class="avis-name">Léa D.</div>
+          <div class="avis-rating">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMANDER CTA -->
+
+<section id="commander">
+  <div class="cta-bg">
+    <img
+      src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80&auto=format&fit=crop"
+      alt="Table gastronomique"
+    />
+  </div>
+  <div class="cta-inner">
+    <div class="cta-badge reveal">
+      <div class="cta-badge-dot"></div>
+      <span>Ouvert maintenant · Livraison disponible</span>
+    </div>
+    <h2 class="cta-title reveal delay-1">
+      T'as faim ?<br><em>On est là.</em>
+    </h2>
+    <p class="cta-sub reveal delay-2">
+      Une commande, un message. Plat + dessert livré ou prêt à emporter.
+      <strong>Pas d'inscription, pas de complication.</strong> Juste de la bonne bouffe.
+    </p>
+    <div class="cta-buttons reveal delay-3">
+      <a href="https://wa.me/33600000000" class="btn-wa">
+        💬 Commander sur WhatsApp
+      </a>
+      <a href="https://instagram.com/" class="btn-ig">
+        📸 Voir Instagram
+      </a>
+    </div>
+    <div class="cta-assurance reveal delay-4">
+      <div class="assurance-item">
+        <span>✓</span>
+        <span>Commande simple</span>
+      </div>
+      <div class="assurance-item">
+        <span>✓</span>
+        <span>Réponse rapide</span>
+      </div>
+      <div class="assurance-item">
+        <span>✓</span>
+        <span>Livraison disponible</span>
+      </div>
+      <div class="assurance-item">
+        <span>✓</span>
+        <span>Paiement à la livraison</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-logo">Le Menu<br><em>des Célibataires</em></div>
+      <div class="footer-tagline">Plat + Dessert · 10€ · Fait Maison</div>
+      <p class="footer-about">Des repas vrais, bons et accessibles pour ceux qui ont mieux à faire que cuisiner. Préparés avec soin, livrés avec le sourire.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Horaires</div>
+      <ul>
+        <li><i>◆</i> Lun – Ven : 11h – 21h</li>
+        <li><i>◆</i> Sam – Dim : 12h – 22h</li>
+        <li><i>◆</i> Jours fériés : 12h – 20h</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Contact & Livraison</div>
+      <ul>
+        <li><i>◆</i> Votre ville</li>
+        <li><i>◆</i> Livraison disponible</li>
+        <li><i>◆</i> À emporter aussi</li>
+        <li><i>◆</i> WhatsApp & Instagram</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Le Menu des Célibataires — Tous droits réservés</p>
+    <div class="footer-bottom-right">
+      <a href="#">Mentions légales</a>
+      <a href="#">Confidentialité</a>
+      <a href="#commander">Commander</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const dot = document.getElementById('cursorDot');
+const circle = document.getElementById('cursorCircle');
+let mx = 0, my = 0, cx = 0, cy = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top = my + 'px';
+});
+
+(function animateCircle() {
+  cx += (mx - cx) * 0.11;
+  cy += (my - cy) * 0.11;
+  circle.style.left = cx + 'px';
+  circle.style.top = cy + 'px';
+  requestAnimationFrame(animateCircle);
+})();
+
+document.querySelectorAll('a, button, .menu-card, .why-card, .feature-row').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-big'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-big'));
+});
+
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
