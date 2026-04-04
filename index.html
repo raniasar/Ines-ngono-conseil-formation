@@ -4,1326 +4,1022 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Le Menu des Célibataires — Plat + Dessert · 10€</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>Le Menu des Célibataires</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black: #0A0705;
-  --dark: #130E0A;
-  --card: #1C1410;
-  --cream: #F7F0E6;
-  --warm: #EDE0CC;
-  --muted: #7A6E64;
-  --fire: #D94F1E;
-  --fire-bright: #FF5C26;
-  --gold: #C8963E;
-  --gold-light: #E8B96A;
-  --green: #2D6A4F;
-  --border: rgba(247,240,230,0.08);
-  --border-warm: rgba(200,150,62,0.2);
-}
+  :root {
+    --creme:     #f7f0e3;
+    --creme2:    #ede2cc;
+    --terracotta:#c2623f;
+    --terra-dk:  #9e4a2c;
+    --brun:      #3e2414;
+    --brun2:     #5c3520;
+    --sable:     #d4b896;
+    --blanc:     #fdfaf5;
+  }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+- { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
 
 body {
-background: var(–black);
-color: var(–cream);
+background: var(–creme);
+color: var(–brun);
 font-family: ‘DM Sans’, sans-serif;
 overflow-x: hidden;
-cursor: none;
 }
 
-/* ══ CURSOR ══ */
-.cursor-dot {
-position: fixed;
-width: 8px; height: 8px;
-background: var(–fire);
-border-radius: 50%;
-pointer-events: none;
-z-index: 9999;
-transform: translate(-50%,-50%);
-transition: transform 0.08s, width 0.2s, height 0.2s;
-}
-.cursor-circle {
-position: fixed;
-width: 36px; height: 36px;
-border: 1px solid rgba(217,79,30,0.4);
-border-radius: 50%;
-pointer-events: none;
-z-index: 9998;
-transform: translate(-50%,-50%);
-transition: width 0.3s, height 0.3s;
-}
-.cursor-big .cursor-dot { width: 16px; height: 16px; }
-.cursor-big .cursor-circle { width: 56px; height: 56px; border-color: rgba(217,79,30,0.6); }
-
-/* ══ GRAIN OVERLAY ══ */
-body::after {
-content: ‘’;
-position: fixed;
-inset: 0;
-pointer-events: none;
-z-index: 9000;
-opacity: 0.03;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 512 512’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘g’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.75’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23g)’/%3E%3C/svg%3E”);
-}
-
-/* ══ NAV ══ */
+/* ───── NAV ───── */
 nav {
-position: fixed;
-top: 0; left: 0; right: 0;
-z-index: 800;
-padding: 0 64px;
+position: fixed; top:0; width:100%; z-index:200;
+background: var(–blanc);
+border-bottom: 2px solid var(–creme2);
+padding: 0 60px;
 height: 72px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-transition: background 0.4s, backdrop-filter 0.4s;
-}
-nav.scrolled {
-background: rgba(10,7,5,0.92);
-backdrop-filter: blur(24px);
-border-bottom: 1px solid var(–border);
+display: flex; align-items:center; justify-content:space-between;
 }
 
-.nav-brand {
-display: flex;
-align-items: center;
-gap: 10px;
+/* LOGO TYPOGRAPHIQUE CSS PUR */
+.logo {
+display: flex; align-items:center; gap:14px;
 text-decoration: none;
 }
-.nav-brand-icon {
-width: 36px; height: 36px;
-background: var(–fire);
-clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-display: flex; align-items: center; justify-content: center;
-font-size: 0.9rem;
-}
-.nav-brand-text {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.05rem;
-letter-spacing: 3px;
-color: var(–cream);
-}
-.nav-brand-text span { color: var(–fire); }
-
-.nav-links {
-display: flex;
-list-style: none;
-gap: 48px;
-align-items: center;
-}
-.nav-links a {
-text-decoration: none;
-color: var(–muted);
-font-size: 0.75rem;
-font-weight: 600;
-letter-spacing: 1.5px;
-text-transform: uppercase;
-transition: color 0.25s;
-}
-.nav-links a:hover { color: var(–cream); }
-
-.nav-cta {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: var(–fire) !important;
-color: white !important;
-padding: 10px 24px !important;
-font-family: ‘Bebas Neue’, sans-serif !important;
-font-size: 0.9rem !important;
-letter-spacing: 2px !important;
-clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-transition: background 0.3s !important;
-}
-.nav-cta:hover { background: var(–fire-bright) !important; color: white !important; }
-
-/* ══ HERO ══ */
-#hero {
-min-height: 100vh;
+.logo-mark {
+width: 44px; height: 44px;
 position: relative;
-display: grid;
-grid-template-columns: 1fr 1fr;
-overflow: hidden;
+display: flex; align-items:center; justify-content:center;
 }
-
-/* Left: photo */
-.hero-photo-side {
-position: relative;
-overflow: hidden;
-}
-.hero-photo-side::after {
+.logo-mark::before {
 content: ‘’;
 position: absolute;
-inset: 0;
-background: linear-gradient(90deg, var(–black) 0%, transparent 40%),
-linear-gradient(0deg, var(–black) 0%, transparent 35%);
+width: 44px; height: 44px;
+border: 2.5px solid var(–terracotta);
+border-radius: 50%;
 }
-.hero-photo-side img {
-width: 100%; height: 100%;
-object-fit: cover;
-object-position: center;
-filter: brightness(0.75) saturate(1.1);
-transform: scale(1.04);
-transition: transform 8s ease;
+.logo-mark::after {
+content: ‘’;
+position: absolute;
+width: 26px; height: 26px;
+border: 2.5px solid var(–brun);
+border-radius: 50%;
 }
-.hero-photo-side:hover img { transform: scale(1); }
-
-/* Right: content */
-.hero-content-side {
-position: relative;
-z-index: 2;
-display: flex;
-flex-direction: column;
-justify-content: center;
-padding: 120px 80px 80px 60px;
+.logo-mark-inner {
+width: 8px; height: 8px;
+background: var(–terracotta);
+border-radius: 50%;
+position: relative; z-index:1;
 }
-
-.hero-eyebrow {
-display: flex;
-align-items: center;
-gap: 14px;
-margin-bottom: 32px;
-opacity: 0;
-animation: fadeUp 0.9s 0.3s both;
+.logo-text {
+display: flex; flex-direction:column; line-height:1;
 }
-.eyebrow-dash { width: 32px; height: 1px; background: var(–fire); }
-.eyebrow-text {
-font-size: 0.68rem;
+.logo-text span:first-child {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+font-weight: 700;
+color: var(–brun);
+letter-spacing: 1px;
+}
+.logo-text span:last-child {
+font-family: ‘DM Sans’, sans-serif;
+font-size: 0.6rem;
 letter-spacing: 3px;
 text-transform: uppercase;
-color: var(–fire);
-font-weight: 600;
+color: var(–terracotta);
+margin-top: 2px;
+}
+
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a {
+font-size: 0.78rem;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–brun2);
+text-decoration: none;
+font-weight: 500;
+transition: color 0.25s;
+}
+.nav-links a:hover { color: var(–terracotta); }
+
+.nav-cta {
+background: var(–terracotta);
+color: var(–blanc) !important;
+padding: 10px 24px;
+border-radius: 2px;
+}
+.nav-cta:hover { background: var(–terra-dk); color: var(–blanc) !important; }
+
+/* ───── HERO ───── */
+.hero {
+min-height: 100vh;
+display: grid;
+grid-template-columns: 1fr 1fr;
+padding-top: 72px;
+}
+
+.hero-left {
+background: var(–brun);
+display: flex; align-items:center; justify-content:center;
+padding: 80px 70px;
+position: relative;
+overflow: hidden;
+}
+.hero-left::before {
+content:’’;
+position:absolute;
+width: 400px; height: 400px;
+border-radius: 50%;
+border: 1px solid rgba(212,184,150,0.15);
+top: -100px; right: -100px;
+}
+.hero-left::after {
+content:’’;
+position:absolute;
+width: 250px; height: 250px;
+border-radius: 50%;
+border: 1px solid rgba(194,98,63,0.2);
+bottom: -60px; left: -60px;
+}
+
+.hero-left-content { position:relative; z-index:1; }
+
+.hero-badge {
+display: inline-block;
+background: rgba(194,98,63,0.2);
+border: 1px solid var(–terracotta);
+color: var(–sable);
+font-size: 0.6rem;
+letter-spacing: 4px;
+text-transform: uppercase;
+padding: 7px 16px;
+margin-bottom: 36px;
+border-radius: 1px;
 }
 
 .hero-title {
 font-family: ‘Playfair Display’, serif;
-font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+font-size: clamp(2.8rem, 4.5vw, 4.2rem);
 font-weight: 900;
-line-height: 1;
-margin-bottom: 8px;
-opacity: 0;
-animation: fadeUp 0.9s 0.5s both;
-}
-.hero-title .t1 { color: var(–cream); display: block; }
-.hero-title .t2 {
-color: var(–fire);
-font-style: italic;
-display: block;
-}
-.hero-title .t3 {
-color: var(–cream);
-display: block;
--webkit-text-stroke: 1px rgba(247,240,230,0.25);
-color: transparent;
-}
-
-.hero-subtitle {
-font-family: ‘Playfair Display’, serif;
-font-style: italic;
-font-size: 1.3rem;
-color: var(–gold-light);
-margin-bottom: 32px;
-opacity: 0;
-animation: fadeUp 0.9s 0.65s both;
-}
-
-.hero-desc {
-font-size: 0.95rem;
-color: var(–muted);
-line-height: 1.8;
-max-width: 380px;
-margin-bottom: 52px;
-opacity: 0;
-animation: fadeUp 0.9s 0.8s both;
-}
-.hero-desc strong { color: var(–cream); font-weight: 600; }
-
-.hero-price-badge {
-display: inline-flex;
-flex-direction: column;
-align-items: flex-start;
-margin-bottom: 52px;
-opacity: 0;
-animation: fadeUp 0.9s 0.9s both;
-}
-.price-label {
-font-size: 0.65rem;
-letter-spacing: 2.5px;
-text-transform: uppercase;
-color: var(–muted);
-margin-bottom: 4px;
-}
-.price-value {
-font-family: ‘Playfair Display’, serif;
-font-size: 4rem;
-font-weight: 900;
-color: var(–gold);
-line-height: 1;
-}
-.price-detail {
-font-size: 0.8rem;
-color: var(–muted);
-margin-top: 4px;
-}
-
-.hero-actions {
-display: flex;
-gap: 16px;
-align-items: center;
-opacity: 0;
-animation: fadeUp 0.9s 1s both;
-}
-
-.btn-primary {
-display: inline-flex;
-align-items: center;
-gap: 12px;
-background: var(–fire);
-color: white;
-text-decoration: none;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 2.5px;
-padding: 16px 40px;
-clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-transition: all 0.3s;
-box-shadow: 0 8px 32px rgba(217,79,30,0.4);
-position: relative;
-overflow: hidden;
-}
-.btn-primary::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
-opacity: 0;
-transition: opacity 0.3s;
-}
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(217,79,30,0.55); }
-.btn-primary:hover::before { opacity: 1; }
-
-.btn-outline {
-display: inline-flex;
-align-items: center;
-gap: 10px;
-color: var(–cream);
-text-decoration: none;
-font-size: 0.72rem;
-font-weight: 600;
-letter-spacing: 2px;
-text-transform: uppercase;
-padding: 16px 0;
-border-bottom: 1px solid rgba(247,240,230,0.15);
-transition: all 0.3s;
-}
-.btn-outline:hover { color: var(–gold); border-color: var(–gold); gap: 16px; }
-
-/* Hero bottom overlay stats */
-.hero-stats-bar {
-position: absolute;
-bottom: 0; left: 0; right: 0;
-z-index: 10;
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-border-top: 1px solid var(–border);
-}
-.hero-stat {
-padding: 24px 32px;
-border-right: 1px solid var(–border);
-background: rgba(10,7,5,0.7);
-backdrop-filter: blur(8px);
-}
-.hero-stat:last-child { border-right: none; }
-.hero-stat-num {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 2rem;
-color: var(–fire);
-letter-spacing: 1px;
-line-height: 1;
-margin-bottom: 4px;
-}
-.hero-stat-label {
-font-size: 0.68rem;
-letter-spacing: 1.5px;
-text-transform: uppercase;
-color: var(–muted);
-}
-
-/* ══ MARQUEE ══ */
-.marquee-section {
-background: var(–fire);
-padding: 13px 0;
-overflow: hidden;
-}
-.marquee-track {
-display: flex;
-width: max-content;
-animation: marquee 22s linear infinite;
-}
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-item {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 0.95rem;
-letter-spacing: 3px;
-color: rgba(10,7,5,0.85);
-padding: 0 36px;
-white-space: nowrap;
-display: flex;
-align-items: center;
-gap: 36px;
-}
-.marquee-item::after { content: ‘✦’; font-size: 0.6rem; }
-
-/* ══ CONCEPT SECTION ══ */
-#concept {
-padding: 160px 64px;
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 80px;
-align-items: center;
-}
-
-.section-eyebrow {
-display: flex;
-align-items: center;
-gap: 14px;
-margin-bottom: 28px;
-}
-.section-eyebrow span {
-font-size: 0.65rem;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: var(–fire);
-font-weight: 700;
-}
-.section-eyebrow::before {
-content: ‘’;
-width: 28px; height: 1px;
-background: var(–fire);
-}
-
-.concept-title {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(2.2rem, 3.5vw, 3.6rem);
-font-weight: 700;
-line-height: 1.15;
-margin-bottom: 28px;
-color: var(–cream);
-}
-.concept-title em { color: var(–gold); font-style: italic; }
-
-.concept-text {
-font-size: 0.95rem;
-color: var(–muted);
-line-height: 1.9;
-margin-bottom: 48px;
-max-width: 460px;
-}
-.concept-text strong { color: var(–cream); font-weight: 600; }
-
-.concept-features {
-display: flex;
-flex-direction: column;
-gap: 16px;
-}
-.feature-row {
-display: flex;
-align-items: center;
-gap: 16px;
-padding: 16px 20px;
-border: 1px solid var(–border);
-background: var(–dark);
-transition: border-color 0.3s, background 0.3s;
-}
-.feature-row:hover { border-color: var(–border-warm); background: var(–card); }
-.feature-icon {
-width: 40px; height: 40px;
-background: rgba(217,79,30,0.1);
-border: 1px solid rgba(217,79,30,0.2);
-display: flex; align-items: center; justify-content: center;
-font-size: 1.1rem;
-flex-shrink: 0;
-}
-.feature-text h4 {
-font-size: 0.85rem;
-font-weight: 600;
-color: var(–cream);
-margin-bottom: 2px;
-}
-.feature-text p {
-font-size: 0.75rem;
-color: var(–muted);
-}
-
-/* Concept right: photo collage */
-.concept-photos {
-display: grid;
-grid-template-columns: 1fr 1fr;
-grid-template-rows: 1fr 1fr;
-gap: 12px;
-height: 600px;
-}
-.photo-cell {
-overflow: hidden;
-position: relative;
-}
-.photo-cell img {
-width: 100%; height: 100%;
-object-fit: cover;
-transition: transform 0.6s ease, filter 0.6s;
-filter: brightness(0.8) saturate(1.1);
-}
-.photo-cell:hover img { transform: scale(1.06); filter: brightness(0.95) saturate(1.2); }
-.photo-cell.tall { grid-row: span 2; }
-.photo-badge {
-position: absolute;
-bottom: 0; left: 0; right: 0;
-background: linear-gradient(transparent, rgba(10,7,5,0.9));
-padding: 28px 20px 16px;
-}
-.photo-badge-text {
-font-family: ‘Playfair Display’, serif;
-font-style: italic;
-font-size: 1rem;
-color: var(–gold-light);
-}
-
-/* ══ MENU SECTION ══ */
-#menu {
-padding: 160px 64px;
-background: var(–dark);
-position: relative;
-}
-
-.menu-header {
-display: flex;
-justify-content: space-between;
-align-items: flex-end;
-margin-bottom: 80px;
-gap: 40px;
-}
-.menu-title {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(2.5rem, 4vw, 4.5rem);
-font-weight: 900;
+color: var(–creme);
 line-height: 1.05;
-}
-.menu-title em { color: var(–fire); font-style: italic; }
-.menu-header-note {
-max-width: 260px;
-font-size: 0.82rem;
-color: var(–muted);
-line-height: 1.7;
-text-align: right;
-}
-.menu-header-note strong { color: var(–cream); display: block; font-size: 0.9rem; margin-bottom: 4px; }
-
-/* Menu cards grid */
-.menu-grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 2px;
-background: var(–border);
-}
-.menu-card {
-background: var(–dark);
-display: grid;
-grid-template-columns: 240px 1fr;
-min-height: 240px;
-transition: background 0.35s;
-position: relative;
-overflow: hidden;
-}
-.menu-card:hover { background: var(–card); }
-
-.card-photo {
-position: relative;
-overflow: hidden;
-}
-.card-photo img {
-width: 100%; height: 100%;
-object-fit: cover;
-transition: transform 0.5s;
-filter: brightness(0.85);
-}
-.menu-card:hover .card-photo img { transform: scale(1.07); }
-
-.card-num {
-position: absolute;
-top: 14px; left: 14px;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 2px;
-color: white;
-background: var(–fire);
-padding: 4px 10px;
-}
-
-.card-body {
-padding: 32px 36px;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-}
-.card-name {
-font-family: ‘Playfair Display’, serif;
-font-size: 1.5rem;
-font-weight: 700;
-color: var(–cream);
-margin-bottom: 8px;
-line-height: 1.2;
-}
-.card-desc {
-font-size: 0.8rem;
-color: var(–muted);
-line-height: 1.6;
-margin-bottom: 24px;
-}
-.card-footer {
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-.card-dessert {
-display: flex;
-align-items: center;
-gap: 8px;
-background: rgba(200,150,62,0.08);
-border: 1px solid rgba(200,150,62,0.2);
-padding: 6px 14px;
-font-size: 0.7rem;
-letter-spacing: 1px;
-text-transform: uppercase;
-color: var(–gold);
-font-weight: 700;
-}
-.card-price {
-font-family: ‘Playfair Display’, serif;
-font-size: 2.2rem;
-font-weight: 900;
-color: var(–fire);
-}
-
-.card-featured::before {
-content: ‘À LA CARTE CETTE SEMAINE’;
-position: absolute;
-top: 14px; right: 14px;
-background: var(–gold);
-color: var(–black);
-font-size: 0.58rem;
-font-weight: 700;
-letter-spacing: 1.5px;
-padding: 4px 10px;
-z-index: 2;
-}
-
-/* ══ WHY US ══ */
-#pourquoi {
-padding: 160px 64px;
-position: relative;
-}
-
-.why-header {
-margin-bottom: 80px;
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 60px;
-align-items: end;
-}
-.why-title {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(2.5rem, 4vw, 5rem);
-font-weight: 900;
-line-height: 1.05;
-}
-.why-title em { color: var(–fire); font-style: italic; }
-.why-intro {
-font-size: 0.95rem;
-color: var(–muted);
-line-height: 1.8;
-padding-bottom: 8px;
-}
-.why-intro strong { color: var(–cream); font-weight: 600; }
-
-.why-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 1px;
-background: var(–border);
-}
-.why-card {
-background: var(–black);
-padding: 48px 36px;
-position: relative;
-overflow: hidden;
-transition: background 0.35s;
-}
-.why-card:hover { background: var(–dark); }
-.why-card-line {
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: var(–fire);
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s;
-}
-.why-card:hover .why-card-line { transform: scaleX(1); }
-.why-card-icon {
-width: 52px; height: 52px;
-background: rgba(217,79,30,0.1);
-border: 1px solid rgba(217,79,30,0.2);
-display: flex; align-items: center; justify-content: center;
-font-size: 1.4rem;
-margin-bottom: 28px;
-}
-.why-card-num {
-position: absolute;
-bottom: 16px; right: 20px;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 5rem;
-color: rgba(247,240,230,0.04);
-letter-spacing: -2px;
-line-height: 1;
-}
-.why-card h3 {
-font-family: ‘Playfair Display’, serif;
-font-size: 1.35rem;
-font-weight: 700;
-color: var(–cream);
 margin-bottom: 12px;
 }
-.why-card p {
-font-size: 0.82rem;
-color: var(–muted);
-line-height: 1.75;
+.hero-title em {
+font-style: italic;
+color: var(–terracotta);
 }
 
-/* ══ TESTIMONIALS ══ */
-#avis {
-padding: 120px 64px;
-background: var(–dark);
+.hero-tagline {
+font-family: ‘DM Serif Display’, serif;
+font-style: italic;
+font-size: 1.15rem;
+color: var(–sable);
+margin: 24px 0 44px;
+line-height: 1.6;
 }
 
-.avis-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 64px;
+.hero-offer {
+display: flex; align-items:center; gap:20px;
 }
-.avis-title {
+.offer-pill {
+background: var(–terracotta);
+color: var(–blanc);
 font-family: ‘Playfair Display’, serif;
-font-size: 2.5rem;
-font-weight: 900;
+font-size: 2rem;
+font-weight: 700;
+width: 80px; height: 80px;
+border-radius: 50%;
+display: flex; align-items:center; justify-content:center;
+flex-shrink: 0;
+box-shadow: 0 8px 30px rgba(194,98,63,0.4);
 }
-.avis-title em { color: var(–gold); font-style: italic; }
-.stars-total {
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-gap: 4px;
+.offer-text {
+font-size: 0.9rem;
+color: var(–sable);
+line-height: 1.6;
 }
-.stars { color: var(–gold); font-size: 1.1rem; letter-spacing: 3px; }
-.stars-label { font-size: 0.72rem; color: var(–muted); letter-spacing: 1px; }
-
-.avis-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 2px;
-background: var(–border);
-}
-.avis-card {
-background: var(–dark);
-padding: 40px 36px;
-transition: background 0.3s;
-}
-.avis-card:hover { background: var(–card); }
-.avis-quote {
+.offer-text strong {
+display: block;
 font-family: ‘Playfair Display’, serif;
 font-size: 1.1rem;
-font-style: italic;
-color: var(–cream);
-line-height: 1.65;
-margin-bottom: 28px;
-position: relative;
-padding-top: 28px;
-}
-.avis-quote::before {
-content: ‘”’;
-position: absolute;
-top: -10px; left: -4px;
-font-size: 4rem;
-color: var(–fire);
-font-family: ‘Playfair Display’, serif;
-line-height: 1;
-opacity: 0.4;
-}
-.avis-author {
-display: flex;
-align-items: center;
-gap: 14px;
-border-top: 1px solid var(–border);
-padding-top: 20px;
-}
-.avis-avatar {
-width: 42px; height: 42px;
-border-radius: 50%;
-overflow: hidden;
-flex-shrink: 0;
-border: 2px solid var(–border-warm);
-}
-.avis-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.avis-name { font-size: 0.85rem; font-weight: 600; color: var(–cream); margin-bottom: 2px; }
-.avis-rating { color: var(–gold); font-size: 0.7rem; letter-spacing: 2px; }
-
-/* ══ CTA SECTION ══ */
-#commander {
-padding: 160px 64px;
-position: relative;
-overflow: hidden;
+color: var(–creme);
+font-weight: 400;
 }
 
-.cta-bg {
-position: absolute;
-inset: 0;
+/* HERO RIGHT — placeholder photo */
+.hero-right {
+position: relative;
+background: var(–creme2);
 overflow: hidden;
 }
-.cta-bg img {
+.photo-placeholder {
 width: 100%; height: 100%;
-object-fit: cover;
-filter: brightness(0.18) saturate(0.8);
+min-height: 500px;
+display: flex; flex-direction:column;
+align-items:center; justify-content:center;
+gap: 16px;
+background:
+repeating-linear-gradient(
+45deg,
+rgba(212,184,150,0.15) 0px,
+rgba(212,184,150,0.15) 1px,
+transparent 1px,
+transparent 20px
+),
+var(–creme2);
+border-left: 3px dashed var(–sable);
 }
-.cta-bg::after {
-content: ‘’;
-position: absolute;
-inset: 0;
-background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(217,79,30,0.06), transparent);
+.photo-placeholder .ph-icon {
+width: 64px; height: 64px;
+border: 2px solid var(–sable);
+border-radius: 8px;
+display: flex; align-items:center; justify-content:center;
+position: relative;
+}
+.photo-placeholder .ph-icon::before {
+content:’’;
+width: 22px; height: 18px;
+border: 2px solid var(–sable);
+border-radius: 3px;
+}
+.photo-placeholder .ph-icon::after {
+content:’’;
+position:absolute;
+width: 10px; height: 10px;
+border-radius: 50%;
+border: 2px solid var(–sable);
+top: 12px; left: 12px;
+}
+.photo-placeholder p {
+font-size: 0.7rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–sable);
+text-align: center;
+font-weight: 500;
 }
 
-.cta-inner {
-position: relative;
-z-index: 2;
+/* ───── SECTION HEADER ───── */
+.section-header {
 text-align: center;
-max-width: 760px;
+margin-bottom: 60px;
+}
+.section-label {
+display: inline-block;
+font-size: 0.6rem;
+letter-spacing: 5px;
+text-transform: uppercase;
+color: var(–terracotta);
+font-weight: 500;
+margin-bottom: 16px;
+}
+.section-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2rem, 4vw, 3rem);
+font-weight: 700;
+color: var(–brun);
+line-height: 1.1;
+}
+.section-title em {
+font-style: italic;
+color: var(–terracotta);
+}
+.section-rule {
+display: flex; align-items:center; gap:16px;
+justify-content:center;
+margin-top: 20px;
+}
+.section-rule::before,
+.section-rule::after {
+content:’’;
+flex:1; max-width:80px;
+height:1px;
+background: linear-gradient(to right, transparent, var(–sable));
+}
+.section-rule::after { background: linear-gradient(to left, transparent, var(–sable)); }
+.rule-dot {
+width: 6px; height: 6px;
+background: var(–terracotta);
+border-radius: 50%;
+}
+
+/* ───── SECTION COMMENT ÇA MARCHE ───── */
+.section-how {
+padding: 100px 60px;
+background: var(–blanc);
+}
+
+.how-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 40px;
+max-width: 1000px;
 margin: 0 auto;
 }
 
-.cta-badge {
-display: inline-flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 36px;
-padding: 10px 24px;
-border: 1px solid var(–border-warm);
-background: rgba(200,150,62,0.06);
+.how-card {
+text-align: center;
+padding: 40px 30px;
+background: var(–creme);
+border-radius: 4px;
+border-top: 3px solid var(–terracotta);
+position: relative;
 }
-.cta-badge span {
-font-size: 0.68rem;
-letter-spacing: 2.5px;
-text-transform: uppercase;
-color: var(–gold);
-font-weight: 700;
-}
-.cta-badge-dot { width: 6px; height: 6px; background: var(–gold); border-radius: 50%; animation: blink 2s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-.cta-title {
+.how-number {
 font-family: ‘Playfair Display’, serif;
-font-size: clamp(3rem, 6vw, 6rem);
+font-size: 3.5rem;
 font-weight: 900;
+color: var(–creme2);
 line-height: 1;
-margin-bottom: 28px;
+margin-bottom: 20px;
+-webkit-text-stroke: 1px var(–sable);
 }
-.cta-title em { color: var(–fire); font-style: italic; }
 
-.cta-sub {
-font-size: 1rem;
-color: var(–muted);
-line-height: 1.8;
+.how-card h3 {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+font-weight: 700;
+color: var(–brun);
+margin-bottom: 12px;
+}
+
+.how-card p {
+font-size: 0.88rem;
+color: var(–brun2);
+line-height: 1.7;
+}
+
+/* ───── SECTION MENU ───── */
+.section-menu {
+padding: 100px 60px;
+background: var(–creme);
+}
+
+.menu-tabs {
+display: flex; gap: 0;
+justify-content: center;
 margin-bottom: 60px;
-max-width: 520px;
+border: 2px solid var(–creme2);
+border-radius: 3px;
+overflow: hidden;
+width: fit-content;
 margin-left: auto;
 margin-right: auto;
 }
-.cta-sub strong { color: var(–cream); font-weight: 600; }
-
-.cta-buttons {
-display: flex;
-gap: 16px;
-justify-content: center;
-flex-wrap: wrap;
-margin-bottom: 52px;
-}
-
-.btn-wa {
-display: inline-flex;
-align-items: center;
-gap: 12px;
-background: #25D366;
-color: white;
-text-decoration: none;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 2.5px;
-padding: 18px 48px;
-clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-box-shadow: 0 10px 36px rgba(37,211,102,0.3);
-transition: all 0.3s;
-}
-.btn-wa:hover { transform: translateY(-3px); box-shadow: 0 20px 52px rgba(37,211,102,0.45); }
-
-.btn-ig {
-display: inline-flex;
-align-items: center;
-gap: 12px;
-background: transparent;
-border: 1px solid rgba(247,240,230,0.2);
-color: var(–cream);
-text-decoration: none;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 2.5px;
-padding: 18px 48px;
-clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-transition: all 0.3s;
-}
-.btn-ig:hover { border-color: var(–gold); color: var(–gold); transform: translateY(-3px); }
-
-.cta-assurance {
-display: flex;
-gap: 32px;
-justify-content: center;
-align-items: center;
-}
-.assurance-item {
-display: flex;
-align-items: center;
-gap: 8px;
-font-size: 0.75rem;
-color: var(–muted);
-letter-spacing: 0.5px;
-}
-.assurance-item span:first-child { color: var(–fire); font-size: 0.9rem; }
-
-/* ══ FOOTER ══ */
-footer {
-background: #060504;
-padding: 80px 64px 36px;
-border-top: 1px solid var(–border);
-}
-
-.footer-grid {
-display: grid;
-grid-template-columns: 2fr 1fr 1fr;
-gap: 80px;
-margin-bottom: 64px;
-}
-
-.footer-brand-logo {
-font-family: ‘Playfair Display’, serif;
-font-size: 1.6rem;
-font-weight: 900;
-margin-bottom: 8px;
-}
-.footer-brand-logo em { color: var(–fire); font-style: italic; }
-.footer-tagline {
+.menu-tab {
+padding: 12px 32px;
 font-size: 0.72rem;
 letter-spacing: 2px;
 text-transform: uppercase;
-color: var(–gold);
-margin-bottom: 20px;
-font-family: ‘Bebas Neue’, sans-serif;
+font-weight: 500;
+border: none;
+cursor: pointer;
+background: transparent;
+color: var(–brun2);
+transition: all 0.25s;
+font-family: ‘DM Sans’, sans-serif;
 }
-.footer-about {
-font-size: 0.85rem;
-color: var(–muted);
-line-height: 1.8;
-max-width: 300px;
+.menu-tab.active {
+background: var(–terracotta);
+color: var(–blanc);
 }
 
-.footer-col-title {
-font-size: 0.62rem;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: var(–fire);
-font-weight: 700;
-margin-bottom: 24px;
-padding-bottom: 12px;
-border-bottom: 1px solid var(–border);
+.menu-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 32px;
+max-width: 1200px;
+margin: 0 auto;
 }
-.footer-col ul { list-style: none; }
-.footer-col li {
-font-size: 0.83rem;
-color: var(–muted);
-padding: 8px 0;
-border-bottom: 1px solid rgba(247,240,230,0.04);
-display: flex;
+
+.dish-card {
+background: var(–blanc);
+border-radius: 4px;
+overflow: hidden;
+border: 1px solid var(–creme2);
+transition: transform 0.3s, box-shadow 0.3s;
+}
+.dish-card:hover {
+transform: translateY(-6px);
+box-shadow: 0 16px 40px rgba(62,36,20,0.12);
+}
+
+/* PLACEHOLDER PHOTO PLAT */
+.dish-photo {
+height: 200px;
+background:
+repeating-linear-gradient(
+-45deg,
+rgba(212,184,150,0.2) 0px,
+rgba(212,184,150,0.2) 1px,
+transparent 1px,
+transparent 16px
+),
+var(–creme2);
+display: flex; flex-direction:column;
+align-items:center; justify-content:center;
 gap: 10px;
-align-items: flex-start;
-transition: color 0.25s;
-}
-.footer-col li:hover { color: var(–cream); }
-.footer-col li i { color: var(–fire); font-style: normal; font-size: 0.8rem; }
-
-.footer-bottom {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding-top: 28px;
-border-top: 1px solid var(–border);
-gap: 20px;
-flex-wrap: wrap;
-}
-.footer-bottom p { font-size: 0.72rem; color: rgba(247,240,230,0.18); }
-.footer-bottom-right { display: flex; gap: 24px; align-items: center; }
-.footer-bottom-right a {
-font-size: 0.68rem;
-color: rgba(247,240,230,0.18);
-text-decoration: none;
-letter-spacing: 1px;
-text-transform: uppercase;
-transition: color 0.25s;
-}
-.footer-bottom-right a:hover { color: var(–cream); }
-
-/* ══ REVEAL ANIMATIONS ══ */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(36px); }
-to { opacity: 1; transform: translateY(0); }
-}
-.reveal {
-opacity: 0;
-transform: translateY(36px);
-transition: opacity 0.75s ease, transform 0.75s ease;
-}
-.reveal.in { opacity: 1; transform: none; }
-.delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.22s; }
-.delay-3 { transition-delay: 0.34s; }
-.delay-4 { transition-delay: 0.46s; }
-
-/* ══ RESPONSIVE ══ */
-@media (max-width: 1100px) {
-nav { padding: 0 32px; }
-.nav-links { display: none; }
-#hero { grid-template-columns: 1fr; }
-.hero-photo-side {
-position: absolute;
-inset: 0;
-z-index: 0;
-}
-.hero-content-side {
+border-bottom: 2px dashed var(–sable);
 position: relative;
-z-index: 2;
-padding: 120px 32px 160px;
-background: linear-gradient(90deg, rgba(10,7,5,0.95) 0%, rgba(10,7,5,0.7) 100%);
 }
-.hero-stats-bar { grid-template-columns: repeat(2,1fr); }
-#concept { grid-template-columns: 1fr; padding: 80px 32px; gap: 48px; }
-.concept-photos { height: 400px; }
-#menu { padding: 80px 32px; }
-.menu-grid { grid-template-columns: 1fr; }
-.menu-card { grid-template-columns: 180px 1fr; min-height: 200px; }
-.menu-header { flex-direction: column; align-items: flex-start; }
-.menu-header-note { text-align: left; max-width: 100%; }
-#pourquoi { padding: 80px 32px; }
-.why-header { grid-template-columns: 1fr; gap: 24px; }
-.why-grid { grid-template-columns: 1fr 1fr; }
-#avis { padding: 80px 32px; }
-.avis-grid { grid-template-columns: 1fr; }
-.avis-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-#commander { padding: 100px 32px; }
-footer { padding: 60px 32px 28px; }
-.footer-grid { grid-template-columns: 1fr; gap: 40px; }
-.footer-bottom { flex-direction: column; align-items: flex-start; }
+.dish-photo-icon {
+width: 48px; height: 48px;
+border: 1.5px solid var(–sable);
+border-radius: 50%;
+display: flex; align-items:center; justify-content:center;
+}
+.dish-photo-icon::before {
+content: ‘’;
+width: 20px; height: 16px;
+border: 1.5px solid var(–sable);
+border-radius: 2px;
+}
+.dish-photo-label {
+font-size: 0.6rem;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(–sable);
 }
 
-@media (max-width: 600px) {
-.hero-stats-bar { grid-template-columns: repeat(2,1fr); }
-.why-grid { grid-template-columns: 1fr; }
-.menu-card { grid-template-columns: 1fr; }
-.card-photo { height: 200px; }
-.cta-assurance { flex-direction: column; gap: 12px; align-items: flex-start; }
-.cta-title { font-size: 2.6rem; }
+.dish-info {
+padding: 22px 24px 24px;
+}
+.dish-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.15rem;
+font-weight: 700;
+color: var(–brun);
+margin-bottom: 8px;
+}
+.dish-desc {
+font-size: 0.82rem;
+color: var(–brun2);
+line-height: 1.6;
+margin-bottom: 16px;
+}
+.dish-tags {
+display: flex; gap: 6px; flex-wrap:wrap;
+}
+.dish-tag {
+background: var(–creme2);
+color: var(–brun2);
+font-size: 0.6rem;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+padding: 4px 10px;
+border-radius: 1px;
+}
+.dish-tag.hot { background: rgba(194,98,63,0.15); color: var(–terracotta); }
+
+/* ───── SECTION OFFRE ───── */
+.section-offre {
+background: var(–brun);
+padding: 100px 60px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.section-offre::before {
+content:’’;
+position: absolute;
+width: 500px; height: 500px;
+border-radius: 50%;
+border: 1px solid rgba(212,184,150,0.08);
+top: -200px; right: -200px;
+}
+.section-offre::after {
+content:’’;
+position: absolute;
+width: 300px; height: 300px;
+border-radius: 50%;
+border: 1px solid rgba(194,98,63,0.1);
+bottom: -100px; left: -100px;
+}
+
+.offre-inner {
+position: relative; z-index:1;
+max-width: 600px;
+margin: 0 auto;
+}
+
+.offre-label {
+font-size: 0.6rem;
+letter-spacing: 5px;
+text-transform: uppercase;
+color: var(–terracotta);
+margin-bottom: 20px;
+}
+
+.offre-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2.5rem, 5vw, 4rem);
+font-weight: 900;
+color: var(–creme);
+line-height: 1.1;
+margin-bottom: 16px;
+}
+.offre-title em {
+font-style: italic;
+color: var(–terracotta);
+}
+
+.offre-sub {
+font-size: 1rem;
+color: var(–sable);
+line-height: 1.7;
+margin-bottom: 50px;
+font-family: ‘DM Serif Display’, serif;
+font-style: italic;
+}
+
+.offre-cards {
+display: flex; gap: 20px; justify-content:center;
+margin-bottom: 50px;
+}
+.offre-card {
+flex: 1;
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(212,184,150,0.2);
+padding: 30px 24px;
+border-radius: 3px;
+}
+.offre-card-icon {
+width: 40px; height: 40px;
+border: 1px solid var(–terracotta);
+border-radius: 50%;
+margin: 0 auto 16px;
+display: flex; align-items:center; justify-content:center;
+font-size: 1.1rem;
+}
+.offre-card h4 {
+font-family: ‘Playfair Display’, serif;
+font-size: 1rem;
+color: var(–creme);
+margin-bottom: 8px;
+}
+.offre-card p {
+font-size: 0.8rem;
+color: var(–sable);
+line-height: 1.5;
+}
+
+.offre-price {
+display: inline-flex; align-items:baseline; gap: 6px;
+background: var(–terracotta);
+padding: 24px 60px;
+border-radius: 2px;
+box-shadow: 0 12px 40px rgba(194,98,63,0.3);
+}
+.price-amount {
+font-family: ‘Playfair Display’, serif;
+font-size: 3.5rem;
+font-weight: 900;
+color: var(–blanc);
+line-height: 1;
+}
+.price-detail {
+text-align: left;
+}
+.price-detail span {
+display: block;
+font-size: 0.7rem;
+color: rgba(255,255,255,0.75);
+letter-spacing: 1.5px;
+}
+.price-detail strong {
+font-size: 0.9rem;
+color: var(–blanc);
+letter-spacing: 1px;
+}
+
+/* ───── SECTION CONTACT / FORMULAIRE ───── */
+.section-contact {
+padding: 100px 60px;
+background: var(–blanc);
+}
+
+.contact-wrap {
+display: grid;
+grid-template-columns: 1fr 1.6fr;
+gap: 80px;
+max-width: 1000px;
+margin: 0 auto;
+align-items: start;
+}
+
+.contact-info h2 {
+font-family: ‘Playfair Display’, serif;
+font-size: 2.4rem;
+font-weight: 700;
+color: var(–brun);
+line-height: 1.1;
+margin-bottom: 16px;
+}
+.contact-info p {
+font-size: 0.9rem;
+color: var(–brun2);
+line-height: 1.75;
+margin-bottom: 36px;
+}
+
+.info-badge {
+display: flex; align-items:center; gap: 12px;
+background: var(–creme);
+border-left: 3px solid var(–terracotta);
+padding: 14px 18px;
+border-radius: 0 3px 3px 0;
+margin-bottom: 12px;
+}
+.info-badge span { font-size: 1rem; }
+.info-badge p {
+font-size: 0.8rem;
+color: var(–brun2);
+margin: 0;
+line-height: 1.4;
+}
+.info-badge strong {
+display: block;
+font-size: 0.85rem;
+color: var(–brun);
+font-family: ‘Playfair Display’, serif;
+}
+
+/* FORMULAIRE */
+.order-form {
+background: var(–creme);
+border-radius: 6px;
+padding: 44px 40px;
+border: 1px solid var(–creme2);
+}
+
+.form-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.4rem;
+font-weight: 700;
+color: var(–brun);
+margin-bottom: 28px;
+padding-bottom: 20px;
+border-bottom: 1px solid var(–creme2);
+}
+
+.form-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 16px;
+margin-bottom: 16px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 16px;
+}
+
+.form-group label {
+font-size: 0.7rem;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+font-weight: 500;
+color: var(–brun2);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+background: var(–blanc);
+border: 1.5px solid var(–creme2);
+border-radius: 3px;
+padding: 12px 16px;
+font-size: 0.9rem;
+font-family: ‘DM Sans’, sans-serif;
+color: var(–brun);
+outline: none;
+transition: border-color 0.2s;
+width: 100%;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+border-color: var(–terracotta);
+}
+.form-group textarea {
+resize: vertical;
+min-height: 100px;
+}
+.form-group select {
+appearance: none;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%235c3520’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 14px center;
+padding-right: 36px;
+cursor: pointer;
+}
+
+.form-submit {
+width: 100%;
+background: var(–terracotta);
+color: var(–blanc);
+border: none;
+padding: 16px;
+border-radius: 3px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 0.85rem;
+font-weight: 500;
+letter-spacing: 2px;
+text-transform: uppercase;
+cursor: pointer;
+margin-top: 8px;
+transition: background 0.25s, transform 0.15s;
+}
+.form-submit:hover {
+background: var(–terra-dk);
+transform: translateY(-1px);
+}
+.form-submit:active { transform: translateY(0); }
+
+.form-success {
+display: none;
+text-align: center;
+padding: 40px 20px;
+}
+.form-success .success-icon {
+width: 60px; height: 60px;
+border-radius: 50%;
+background: rgba(194,98,63,0.12);
+border: 2px solid var(–terracotta);
+display: flex; align-items:center; justify-content:center;
+margin: 0 auto 20px;
+font-size: 1.4rem;
+}
+.form-success h3 {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.4rem;
+color: var(–brun);
+margin-bottom: 10px;
+}
+.form-success p {
+font-size: 0.88rem;
+color: var(–brun2);
+line-height: 1.6;
+}
+
+/* ───── FOOTER ───── */
+footer {
+background: var(–brun);
+padding: 40px 60px;
+display: flex; align-items:center; justify-content:space-between;
+}
+.footer-logo {
+display: flex; align-items:center; gap: 12px;
+}
+.footer-logo-mark {
+width: 32px; height: 32px;
+border-radius: 50%;
+border: 1.5px solid var(–terracotta);
+display: flex; align-items:center; justify-content:center;
+}
+.footer-logo-mark::before {
+content:’’;
+width: 14px; height: 14px;
+border-radius: 50%;
+border: 1.5px solid var(–sable);
+}
+.footer-logo span {
+font-family: ‘Playfair Display’, serif;
+font-size: 0.95rem;
+color: var(–creme);
+font-weight: 700;
+}
+footer p {
+font-size: 0.72rem;
+color: var(–sable);
+letter-spacing: 1px;
+}
+
+/* ───── ANIMATIONS ───── */
+@keyframes fadeUp {
+from { opacity:0; transform:translateY(24px); }
+to   { opacity:1; transform:translateY(0); }
+}
+.hero-left-content > * { animation: fadeUp 0.8s ease both; }
+.hero-badge        { animation-delay: 0.1s; }
+.hero-title        { animation-delay: 0.25s; }
+.hero-tagline      { animation-delay: 0.4s; }
+.hero-offer        { animation-delay: 0.55s; }
+
+/* ───── RESPONSIVE ───── */
+@media (max-width: 900px) {
+nav { padding: 0 24px; }
+.nav-links { display:none; }
+.hero { grid-template-columns: 1fr; }
+.hero-right { display:none; }
+.hero-left { padding: 60px 32px; min-height: 100vh; }
+.section-how, .section-menu, .section-offre, .section-contact {
+padding: 70px 24px;
+}
+.how-grid, .menu-grid { grid-template-columns: 1fr; }
+.contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+.order-form { padding: 28px 20px; }
+.form-row { grid-template-columns: 1fr; }
+.offre-cards { flex-direction:column; }
+footer { flex-direction:column; gap:16px; text-align:center; }
 }
 </style>
 
 </head>
 <body>
 
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-circle" id="cursorCircle"></div>
-
 <!-- NAV -->
 
-<nav id="navbar">
-  <a href="#" class="nav-brand">
-    <div class="nav-brand-icon">🍴</div>
-    <span class="nav-brand-text">LE MENU <span>DES</span> CÉLIBS</span>
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <div class="logo-mark-inner"></div>
+    </div>
+    <div class="logo-text">
+      <span>Le Menu</span>
+      <span>des célibataires</span>
+    </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#concept">Le concept</a></li>
+    <li><a href="#comment">Comment ça marche</a></li>
     <li><a href="#menu">Le menu</a></li>
-    <li><a href="#pourquoi">Pourquoi nous</a></li>
-    <li><a href="#avis">Avis</a></li>
-    <li><a href="#commander" class="nav-cta">Commander →</a></li>
+    <li><a href="#offre">Notre offre</a></li>
+    <li><a href="#contact" class="nav-cta">Commander</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
 
-<section id="hero">
-  <div class="hero-photo-side">
-    <img
-      src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1200&q=85&auto=format&fit=crop"
-      alt="Repas maison appétissant"
-    />
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-left-content">
+      <div class="hero-badge">Livraison · Fait maison · Rapide</div>
+      <h1 class="hero-title">
+        Bien manger<br>
+        <em>sans cuisiner.</em>
+      </h1>
+      <p class="hero-tagline">
+        Des repas savoureux, simples et abordables.<br>
+        Pensés pour vous — pas besoin de toucher à la casserole.
+      </p>
+      <div class="hero-offer">
+        <div class="offer-pill">10€</div>
+        <div class="offer-text">
+          <strong>Plat + Dessert</strong>
+          livré directement chez vous,<br>
+          sans prise de tête.
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="hero-content-side">
-    <div class="hero-eyebrow">
-      <span class="eyebrow-dash"></span>
-      <span class="eyebrow-text">Le repas du soir, sans prise de tête</span>
-    </div>
+  <!-- PLACEHOLDER — remplace par ta photo -->
 
-```
-<h1 class="hero-title">
-  <span class="t1">LE MENU</span>
-  <span class="t2">des Célibs</span>
-  <span class="t3">Bien manger</span>
-</h1>
-
-<div class="hero-subtitle">Plat + Dessert · Fait maison · 10€</div>
-
-<p class="hero-desc">
-  <strong>T'as pas envie de cuisiner ce soir ?</strong> On s'en occupe.
-  Un vrai repas maison — plat chaud + dessert — à 10€.
-  Livré chez toi ou prêt à emporter.
-</p>
-
-<div class="hero-price-badge">
-  <span class="price-label">Tout compris</span>
-  <div class="price-value">10€</div>
-  <span class="price-detail">Plat du jour + dessert maison</span>
-</div>
-
-<div class="hero-actions">
-  <a href="#commander" class="btn-primary">
-    Je commande maintenant →
-  </a>
-  <a href="#menu" class="btn-outline">Voir le menu ↓</a>
-</div>
-```
-
-  </div>
-
-  <div class="hero-stats-bar">
-    <div class="hero-stat">
-      <div class="hero-stat-num">10€</div>
-      <div class="hero-stat-label">Plat + Dessert</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">100%</div>
-      <div class="hero-stat-label">Fait maison</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">7j/7</div>
-      <div class="hero-stat-label">Disponible</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">0€</div>
-      <div class="hero-stat-label">De surprise cachée</div>
+  <div class="hero-right">
+    <div class="photo-placeholder">
+      <div class="ph-icon"></div>
+      <p>📸 Remplace par ta photo principale</p>
     </div>
   </div>
 </section>
 
-<!-- MARQUEE -->
+<!-- COMMENT ÇA MARCHE -->
 
-<div class="marquee-section">
-  <div class="marquee-track">
-    <div class="marquee-item">PLAT + DESSERT</div>
-    <div class="marquee-item">10€ SEULEMENT</div>
-    <div class="marquee-item">FAIT MAISON</div>
-    <div class="marquee-item">RIEN QUE POUR TOI</div>
-    <div class="marquee-item">LIVRAISON DISPONIBLE</div>
-    <div class="marquee-item">MENU RENOUVELÉ CHAQUE SEMAINE</div>
-    <div class="marquee-item">COMMANDE EN 30 SECONDES</div>
-    <div class="marquee-item">PLAT + DESSERT</div>
-    <div class="marquee-item">10€ SEULEMENT</div>
-    <div class="marquee-item">FAIT MAISON</div>
-    <div class="marquee-item">RIEN QUE POUR TOI</div>
-    <div class="marquee-item">LIVRAISON DISPONIBLE</div>
-    <div class="marquee-item">MENU RENOUVELÉ CHAQUE SEMAINE</div>
-    <div class="marquee-item">COMMANDE EN 30 SECONDES</div>
-  </div>
-</div>
-
-<!-- CONCEPT -->
-
-<section id="concept">
-  <div>
-    <div class="section-eyebrow reveal"><span>Le concept</span></div>
-    <h2 class="concept-title reveal delay-1">
-      Des repas <em>vrais,</em><br>pensés pour toi.
-    </h2>
-    <p class="concept-text reveal delay-2">
-      T'as une vie. T'as mieux à faire que de rester une heure en cuisine.
-      <strong>Le Menu des Célibataires</strong>, c'est un plat maison chaud +
-      un dessert fait avec soin, à 10€ seulement. Disponible 7j/7,
-      à emporter ou livré directement chez toi. Simple, honnête, bon.
-    </p>
-    <div class="concept-features reveal delay-3">
-      <div class="feature-row">
-        <div class="feature-icon">⚡</div>
-        <div class="feature-text">
-          <h4>Commande en 30 secondes</h4>
-          <p>Un message WhatsApp suffit. Pas de formulaire, pas de compte.</p>
-        </div>
-      </div>
-      <div class="feature-row">
-        <div class="feature-icon">🏠</div>
-        <div class="feature-text">
-          <h4>Vraiment fait maison</h4>
-          <p>Des vraies recettes, préparées avec de vrais ingrédients. Chaque jour.</p>
-        </div>
-      </div>
-      <div class="feature-row">
-        <div class="feature-icon">🍽️</div>
-        <div class="feature-text">
-          <h4>Portion juste pour une personne</h4>
-          <p>Ni trop, ni trop peu. Exactement ce qu'il te faut pour un bon repas.</p>
-        </div>
-      </div>
-    </div>
+<section class="section-how" id="comment">
+  <div class="section-header">
+    <div class="section-label">Simple comme bonjour</div>
+    <h2 class="section-title">Comment ça <em>marche ?</em></h2>
+    <div class="section-rule"><div class="rule-dot"></div></div>
   </div>
 
-  <div class="concept-photos reveal delay-2">
-    <div class="photo-cell tall">
-      <img
-        src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&q=80&auto=format&fit=crop"
-        alt="Plat maison"
-      />
-      <div class="photo-badge">
-        <div class="photo-badge-text">Chaque plat préparé avec soin</div>
-      </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-number">01</div>
+      <h3>Tu choisis ton menu</h3>
+      <p>Regarde la carte du jour et sélectionne ton plat + ton dessert. Chaque semaine, de nouvelles recettes.</p>
     </div>
-    <div class="photo-cell">
-      <img
-        src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80&auto=format&fit=crop"
-        alt="Dessert maison"
-      />
+    <div class="how-card">
+      <div class="how-number">02</div>
+      <h3>Tu commandes</h3>
+      <p>Envoie-nous un message sur WhatsApp ou appelle-nous. Commande avant 11h pour le déjeuner.</p>
     </div>
-    <div class="photo-cell">
-      <img
-        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80&auto=format&fit=crop"
-        alt="Repas savoureux"
-      />
+    <div class="how-card">
+      <div class="how-number">03</div>
+      <h3>Tu te régales</h3>
+      <p>Tu reçois ton repas chaud, fait maison, prêt à manger. Juste à ouvrir et savourer.</p>
     </div>
   </div>
 </section>
 
 <!-- MENU -->
 
-<section id="menu">
-  <div class="menu-header">
-    <div>
-      <div class="section-eyebrow reveal"><span>Cette semaine</span></div>
-      <h2 class="menu-title reveal delay-1">
-        Le menu<br><em>du moment</em>
-      </h2>
-    </div>
-    <div class="menu-header-note reveal">
-      <strong>Renouvelé chaque semaine 🔔</strong>
-      Suis-nous sur Instagram pour découvrir les nouveaux plats en avant-première.
-    </div>
+<section class="section-menu" id="menu">
+  <div class="section-header">
+    <div class="section-label">Carte du moment</div>
+    <h2 class="section-title">Nos <em>plats</em></h2>
+    <div class="section-rule"><div class="rule-dot"></div></div>
+  </div>
+
+  <div class="menu-tabs">
+    <button class="menu-tab active">Plats</button>
+    <button class="menu-tab">Desserts</button>
   </div>
 
   <div class="menu-grid">
-    <!-- Card 1 -->
-    <div class="menu-card card-featured reveal">
-      <div class="card-photo">
-        <img
-          src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600&q=80&auto=format&fit=crop"
-          alt="Pâtes bolognaise"
-        />
-        <div class="card-num">01</div>
-      </div>
-      <div class="card-body">
-        <div>
-          <div class="card-name">Pâtes à la Bolognaise</div>
-          <div class="card-desc">Sauce maison mijotée 2h · Viande fondante · Parmesan râpé · Basilic frais</div>
-        </div>
-        <div class="card-footer">
-          <div class="card-dessert">🍮 Crème caramel</div>
-          <div class="card-price">10€</div>
-        </div>
-      </div>
-    </div>
 
 ```
-<!-- Card 2 -->
-<div class="menu-card reveal delay-1">
-  <div class="card-photo">
-    <img
-      src="https://images.unsplash.com/photo-1598103442097-8b74394b95c3?w=600&q=80&auto=format&fit=crop"
-      alt="Poulet rôti"
-    />
-    <div class="card-num">02</div>
+<!-- PLAT 1 -->
+<div class="dish-card">
+  <div class="dish-photo">
+    <div class="dish-photo-icon"></div>
+    <div class="dish-photo-label">Ta photo ici</div>
   </div>
-  <div class="card-body">
-    <div>
-      <div class="card-name">Poulet Rôti aux Herbes</div>
-      <div class="card-desc">Marinade citron-herbes · Légumes rôtis · Pommes de terre fondantes</div>
-    </div>
-    <div class="card-footer">
-      <div class="card-dessert">🍰 Tiramisu maison</div>
-      <div class="card-price">10€</div>
+  <div class="dish-info">
+    <div class="dish-name">Poulet rôti & légumes</div>
+    <p class="dish-desc">Cuisse de poulet dorée au four, pommes de terre rôties et haricots verts. Simple, nourrissant.</p>
+    <div class="dish-tags">
+      <span class="dish-tag">Maison</span>
+      <span class="dish-tag hot">Populaire</span>
     </div>
   </div>
 </div>
 
-<!-- Card 3 -->
-<div class="menu-card reveal delay-2">
-  <div class="card-photo">
-    <img
-      src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80&auto=format&fit=crop"
-      alt="Tajine de poulet"
-    />
-    <div class="card-num">03</div>
+<!-- PLAT 2 -->
+<div class="dish-card">
+  <div class="dish-photo">
+    <div class="dish-photo-icon"></div>
+    <div class="dish-photo-label">Ta photo ici</div>
   </div>
-  <div class="card-body">
-    <div>
-      <div class="card-name">Tajine de Poulet</div>
-      <div class="card-desc">Olives & citron confit · Semoule dorée · Épices du Maghreb</div>
-    </div>
-    <div class="card-footer">
-      <div class="card-dessert">🍯 Gâteau au miel</div>
-      <div class="card-price">10€</div>
+  <div class="dish-info">
+    <div class="dish-name">Pâtes à la bolognaise</div>
+    <p class="dish-desc">Pâtes al dente avec sauce tomate maison à la viande hachée, mijotée longuement.</p>
+    <div class="dish-tags">
+      <span class="dish-tag">Maison</span>
+      <span class="dish-tag">Rapide</span>
     </div>
   </div>
 </div>
 
-<!-- Card 4 -->
-<div class="menu-card reveal delay-3">
-  <div class="card-photo">
-    <img
-      src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&q=80&auto=format&fit=crop"
-      alt="Gratin de courgettes"
-    />
-    <div class="card-num">04</div>
+<!-- PLAT 3 -->
+<div class="dish-card">
+  <div class="dish-photo">
+    <div class="dish-photo-icon"></div>
+    <div class="dish-photo-label">Ta photo ici</div>
   </div>
-  <div class="card-body">
-    <div>
-      <div class="card-name">Gratin de Courgettes</div>
-      <div class="card-desc">Fromage fondu · Sauce béchamel maison · Légumes du soleil</div>
+  <div class="dish-info">
+    <div class="dish-name">Riz & poisson grillé</div>
+    <p class="dish-desc">Filet de poisson grillé servi avec du riz blanc et une sauce légère citronnée.</p>
+    <div class="dish-tags">
+      <span class="dish-tag">Maison</span>
+      <span class="dish-tag">Léger</span>
     </div>
-    <div class="card-footer">
-      <div class="card-dessert">🧁 Muffin chocolat</div>
-      <div class="card-price">10€</div>
+  </div>
+</div>
+
+<!-- DESSERT 1 -->
+<div class="dish-card" style="display:none">
+  <div class="dish-photo">
+    <div class="dish-photo-icon"></div>
+    <div class="dish-photo-label">Ta photo ici</div>
+  </div>
+  <div class="dish-info">
+    <div class="dish-name">Fondant au chocolat</div>
+    <p class="dish-desc">Moelleux fondant, cœur coulant au chocolat noir. Servi tiède.</p>
+    <div class="dish-tags">
+      <span class="dish-tag hot">Coup de cœur</span>
+    </div>
+  </div>
+</div>
+
+<!-- DESSERT 2 -->
+<div class="dish-card" style="display:none">
+  <div class="dish-photo">
+    <div class="dish-photo-icon"></div>
+    <div class="dish-photo-label">Ta photo ici</div>
+  </div>
+  <div class="dish-info">
+    <div class="dish-name">Crème caramel</div>
+    <p class="dish-desc">Crème lisse et onctueuse, nappée d'un caramel doré maison.</p>
+    <div class="dish-tags">
+      <span class="dish-tag">Maison</span>
+      <span class="dish-tag">Doux</span>
+    </div>
+  </div>
+</div>
+
+<!-- DESSERT 3 -->
+<div class="dish-card" style="display:none">
+  <div class="dish-photo">
+    <div class="dish-photo-icon"></div>
+    <div class="dish-photo-label">Ta photo ici</div>
+  </div>
+  <div class="dish-info">
+    <div class="dish-name">Salade de fruits frais</div>
+    <p class="dish-desc">Mélange de fruits de saison, légèrement sucrés. Frais et léger.</p>
+    <div class="dish-tags">
+      <span class="dish-tag">Frais</span>
+      <span class="dish-tag">Léger</span>
     </div>
   </div>
 </div>
@@ -1332,233 +1028,208 @@ footer { padding: 60px 32px 28px; }
   </div>
 </section>
 
-<!-- WHY -->
+<!-- OFFRE -->
 
-<section id="pourquoi">
-  <div class="why-header">
+<section class="section-offre" id="offre">
+  <div class="offre-inner">
+    <p class="offre-label">Notre engagement</p>
+    <h2 class="offre-title">Un repas complet<br><em>pour seulement 10€</em></h2>
+    <p class="offre-sub">Plat + dessert. Fait maison. Livré chez vous.<br>Sans compromis sur le goût.</p>
+
+```
+<div class="offre-cards">
+  <div class="offre-card">
+    <div class="offre-card-icon">🍽</div>
+    <h4>Plat du jour</h4>
+    <p>Recette maison, changée régulièrement pour varier les plaisirs</p>
+  </div>
+  <div class="offre-card">
+    <div class="offre-card-icon">🍮</div>
+    <h4>Dessert inclus</h4>
+    <p>Un dessert gourmand préparé avec soin pour finir en douceur</p>
+  </div>
+  <div class="offre-card">
+    <div class="offre-card-icon">🚀</div>
+    <h4>Livraison rapide</h4>
+    <p>Commande avant 11h, livré à l'heure du déjeuner</p>
+  </div>
+</div>
+
+<div class="offre-price">
+  <div class="price-amount">10€</div>
+  <div class="price-detail">
+    <strong>Plat + Dessert</strong>
+    <span>livraison incluse</span>
+    <span>fait maison</span>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- CONTACT / FORMULAIRE DE COMMANDE -->
+
+<section class="section-contact" id="contact">
+  <div class="section-header" style="margin-bottom:50px;">
+    <div class="section-label">Commander en ligne</div>
+    <h2 class="section-title">Passer <em>commande</em></h2>
+    <div class="section-rule"><div class="rule-dot"></div></div>
+  </div>
+
+  <div class="contact-wrap">
+
+```
+<!-- INFOS GAUCHE -->
+<div class="contact-info">
+  <h2>On prépare<br>votre repas.</h2>
+  <p>Remplissez le formulaire ci-contre. On vous confirme votre commande rapidement et vous recevez votre repas chaud à l'heure prévue.</p>
+
+  <div class="info-badge">
+    <span>⏰</span>
     <div>
-      <div class="section-eyebrow reveal"><span>Pourquoi nous choisir</span></div>
-      <h2 class="why-title reveal delay-1">
-        Tout ce qu'il<br>te faut.<br><em>Rien de moins.</em>
-      </h2>
-    </div>
-    <p class="why-intro reveal delay-2">
-      On n'est pas un resto, on n'est pas une appli compliquée.
-      On est juste <strong>des gens qui cuisinent bien</strong>,
-      pour des gens qui ont mieux à faire. C'est tout. C'est assez.
-    </p>
-  </div>
-
-  <div class="why-grid">
-    <div class="why-card reveal">
-      <div class="why-card-line"></div>
-      <div class="why-card-icon">⚡</div>
-      <h3>Ultra Rapide</h3>
-      <p>Commande sur WhatsApp en 30 secondes. Pas de formulaire, pas d'inscription, pas d'attente.</p>
-      <span class="why-card-num">01</span>
-    </div>
-    <div class="why-card reveal delay-1">
-      <div class="why-card-line"></div>
-      <div class="why-card-icon">💸</div>
-      <h3>Vraiment Pas Cher</h3>
-      <p>10€ pour un repas complet. Moins qu'un kebab, infiniment meilleur que des pâtes à l'eau.</p>
-      <span class="why-card-num">02</span>
-    </div>
-    <div class="why-card reveal delay-2">
-      <div class="why-card-line"></div>
-      <div class="why-card-icon">❤️</div>
-      <h3>100% Fait Maison</h3>
-      <p>Cuisinés avec soin, pas réchauffés. Des vraies recettes, des vrais ingrédients, pour de vrai.</p>
-      <span class="why-card-num">03</span>
-    </div>
-    <div class="why-card reveal delay-3">
-      <div class="why-card-line"></div>
-      <div class="why-card-icon">🍽️</div>
-      <h3>Portion Solo</h3>
-      <p>Pensé pour une seule personne. Ni trop, ni trop peu. Ce qu'il te faut, point.</p>
-      <span class="why-card-num">04</span>
+      <strong>Horaires de commande</strong>
+      <p>Avant 11h pour le déjeuner</p>
     </div>
   </div>
-</section>
-
-<!-- AVIS -->
-
-<section id="avis">
-  <div class="avis-header reveal">
-    <h2 class="avis-title">Ce qu'ils en <em>disent</em></h2>
-    <div class="stars-total">
-      <div class="stars">★★★★★</div>
-      <div class="stars-label">+100 clients satisfaits</div>
+  <div class="info-badge">
+    <span>🍽</span>
+    <div>
+      <strong>Plat + Dessert</strong>
+      <p>Seulement 10€ livraison incluse</p>
     </div>
   </div>
-  <div class="avis-grid">
-    <div class="avis-card reveal">
-      <div class="avis-quote">
-        Franchement je pensais pas que ça allait être aussi bon. Les pâtes bolognaise c'était exactement comme à la maison, mais en mieux. Et à 10€ c'est vraiment imbattable.
-      </div>
-      <div class="avis-author">
-        <div class="avis-avatar">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80&auto=format&fit=crop&crop=face" alt="Sarah" />
-        </div>
-        <div>
-          <div class="avis-name">Sarah M.</div>
-          <div class="avis-rating">★★★★★</div>
-        </div>
-      </div>
-    </div>
-    <div class="avis-card reveal delay-1">
-      <div class="avis-quote">
-        Le tajine de poulet était incroyable, semoule bien cuite, sauce parfumée. J'ai commandé trois fois cette semaine. Je vais recommander à tous mes amis.
-      </div>
-      <div class="avis-author">
-        <div class="avis-avatar">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80&auto=format&fit=crop&crop=face" alt="Karim" />
-        </div>
-        <div>
-          <div class="avis-name">Karim B.</div>
-          <div class="avis-rating">★★★★★</div>
-        </div>
-      </div>
-    </div>
-    <div class="avis-card reveal delay-2">
-      <div class="avis-quote">
-        Super concept. J'habite seule et me faire à manger pour une personne c'est toujours une galère. Là j'ai tout ce qu'il me faut, livré, à 10€. Parfait.
-      </div>
-      <div class="avis-author">
-        <div class="avis-avatar">
-          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80&auto=format&fit=crop&crop=face" alt="Léa" />
-        </div>
-        <div>
-          <div class="avis-name">Léa D.</div>
-          <div class="avis-rating">★★★★★</div>
-        </div>
-      </div>
+  <div class="info-badge">
+    <span>📍</span>
+    <div>
+      <strong>Zone de livraison</strong>
+      <p>À compléter avec ta ville</p>
     </div>
   </div>
-</section>
+</div>
 
-<!-- COMMANDER CTA -->
+<!-- FORMULAIRE -->
+<div class="order-form">
+  <div class="form-title">Votre commande</div>
 
-<section id="commander">
-  <div class="cta-bg">
-    <img
-      src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80&auto=format&fit=crop"
-      alt="Table gastronomique"
-    />
+  <div id="formContent">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" id="prenom" placeholder="Votre prénom">
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="tel" id="tel" placeholder="06 00 00 00 00">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Adresse de livraison</label>
+      <input type="text" id="adresse" placeholder="Numéro, rue, ville...">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Plat choisi</label>
+        <select id="plat">
+          <option value="">— Choisir un plat —</option>
+          <option>Poulet rôti & légumes</option>
+          <option>Pâtes à la bolognaise</option>
+          <option>Riz & poisson grillé</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dessert choisi</label>
+        <select id="dessert">
+          <option value="">— Choisir un dessert —</option>
+          <option>Fondant au chocolat</option>
+          <option>Crème caramel</option>
+          <option>Salade de fruits frais</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Message / Précisions (optionnel)</label>
+      <textarea id="message" placeholder="Allergies, instructions particulières, heure souhaitée..."></textarea>
+    </div>
+
+    <button class="form-submit" onclick="envoyerCommande()">Envoyer ma commande →</button>
   </div>
-  <div class="cta-inner">
-    <div class="cta-badge reveal">
-      <div class="cta-badge-dot"></div>
-      <span>Ouvert maintenant · Livraison disponible</span>
-    </div>
-    <h2 class="cta-title reveal delay-1">
-      T'as faim ?<br><em>On est là.</em>
-    </h2>
-    <p class="cta-sub reveal delay-2">
-      Une commande, un message. Plat + dessert livré ou prêt à emporter.
-      <strong>Pas d'inscription, pas de complication.</strong> Juste de la bonne bouffe.
-    </p>
-    <div class="cta-buttons reveal delay-3">
-      <a href="https://wa.me/33600000000" class="btn-wa">
-        💬 Commander sur WhatsApp
-      </a>
-      <a href="https://instagram.com/" class="btn-ig">
-        📸 Voir Instagram
-      </a>
-    </div>
-    <div class="cta-assurance reveal delay-4">
-      <div class="assurance-item">
-        <span>✓</span>
-        <span>Commande simple</span>
-      </div>
-      <div class="assurance-item">
-        <span>✓</span>
-        <span>Réponse rapide</span>
-      </div>
-      <div class="assurance-item">
-        <span>✓</span>
-        <span>Livraison disponible</span>
-      </div>
-      <div class="assurance-item">
-        <span>✓</span>
-        <span>Paiement à la livraison</span>
-      </div>
-    </div>
+
+  <!-- MESSAGE SUCCÈS -->
+  <div class="form-success" id="formSuccess">
+    <div class="success-icon">✓</div>
+    <h3>Commande reçue !</h3>
+    <p>Merci pour votre commande. Nous vous confirmons par téléphone dans les plus brefs délais. À tout à l'heure !</p>
+  </div>
+</div>
+```
+
   </div>
 </section>
 
 <!-- FOOTER -->
 
 <footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand-logo">Le Menu<br><em>des Célibataires</em></div>
-      <div class="footer-tagline">Plat + Dessert · 10€ · Fait Maison</div>
-      <p class="footer-about">Des repas vrais, bons et accessibles pour ceux qui ont mieux à faire que cuisiner. Préparés avec soin, livrés avec le sourire.</p>
+  <div class="footer-logo">
+    <div class="footer-logo-mark">
+      <div style="width:14px;height:14px;border-radius:50%;border:1px solid #c2623f;"></div>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Horaires</div>
-      <ul>
-        <li><i>◆</i> Lun – Ven : 11h – 21h</li>
-        <li><i>◆</i> Sam – Dim : 12h – 22h</li>
-        <li><i>◆</i> Jours fériés : 12h – 20h</li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Contact & Livraison</div>
-      <ul>
-        <li><i>◆</i> Votre ville</li>
-        <li><i>◆</i> Livraison disponible</li>
-        <li><i>◆</i> À emporter aussi</li>
-        <li><i>◆</i> WhatsApp & Instagram</li>
-      </ul>
-    </div>
+    <span>Le Menu des Célibataires</span>
   </div>
-  <div class="footer-bottom">
-    <p>© 2024 Le Menu des Célibataires — Tous droits réservés</p>
-    <div class="footer-bottom-right">
-      <a href="#">Mentions légales</a>
-      <a href="#">Confidentialité</a>
-      <a href="#commander">Commander</a>
-    </div>
-  </div>
+  <p>© 2025 · Bien manger sans cuisiner</p>
 </footer>
 
 <script>
-// Cursor
-const dot = document.getElementById('cursorDot');
-const circle = document.getElementById('cursorCircle');
-let mx = 0, my = 0, cx = 0, cy = 0;
+  // Tabs menu
+  const tabs = document.querySelectorAll('.menu-tab');
+  const cards = document.querySelectorAll('.dish-card');
 
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dot.style.left = mx + 'px';
-  dot.style.top = my + 'px';
-});
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      // plats = cards 0,1,2 — desserts = cards 3,4,5
+      cards.forEach((c, j) => {
+        c.style.display = (i === 0 && j < 3) || (i === 1 && j >= 3) ? 'block' : 'none';
+      });
+    });
+  });
 
-(function animateCircle() {
-  cx += (mx - cx) * 0.11;
-  cy += (my - cy) * 0.11;
-  circle.style.left = cx + 'px';
-  circle.style.top = cy + 'px';
-  requestAnimationFrame(animateCircle);
-})();
+  // Formulaire commande
+  function envoyerCommande() {
+    const prenom  = document.getElementById('prenom').value.trim();
+    const tel     = document.getElementById('tel').value.trim();
+    const adresse = document.getElementById('adresse').value.trim();
+    const plat    = document.getElementById('plat').value;
+    const dessert = document.getElementById('dessert').value;
 
-document.querySelectorAll('a, button, .menu-card, .why-card, .feature-row').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-big'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-big'));
-});
+    if (!prenom || !tel || !adresse || !plat || !dessert) {
+      alert('Merci de remplir tous les champs obligatoires.');
+      return;
+    }
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
 
-// Navbar scroll
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-});
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
 
-// Scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.how-card, .dish-card, .offre-card, .contact-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
 </script>
 
 </body>
